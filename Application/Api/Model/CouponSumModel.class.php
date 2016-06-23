@@ -19,6 +19,8 @@ class CouponSumModel extends RelationModel {
 		if($id){
 			$coupon = $this->where("id = '$id'")->find();
 			D("coupon")->make_coupon_by_sum($coupon);
+			/*relation to shop*/
+			$menuresult = R ( "Api/Shop/hook2shop_set",array($id, '优惠券sum', '', $dat['shop_id']) );
 		}
 		return true;
 	}
