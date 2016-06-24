@@ -30,7 +30,15 @@ class BaseController extends Controller {
 		} else{ 
 			return false; 
 		} 
-	} 	
+	} 
+
+
+	/*change current shop*/
+	public function change_shop($id) {
+		session('shop_id',$id);
+		$this->shop_id = $id;
+	}
+		
 
 }
 

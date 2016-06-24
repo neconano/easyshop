@@ -10,6 +10,44 @@ namespace Api\Controller;
 
 class PromotionController extends BaseController {
 	
+
+	public function get_the_promotion_demo() {
+		$promotion_id = 1;
+		$flag = 1;
+		$a = $this->get_the_promotion($promotion_id,$flag);
+		dump($a);
+	}
+	/*get the promotion*/
+	public function get_the_promotion($promotion_id,$flag) {
+		$list = D("Promotion")->get_promotion('','',$flag,$promotion_id);
+		return $list;
+	}
+	
+	public function get_home_seckill_demo() {
+		$this->change_shop(1);
+		$a = $this->get_home_seckill();
+		dump($a);
+	}
+	/*get home page seckill promotion*/
+	public function get_home_seckill($shop_id="",$flag="") {
+		/*get recent*/
+		$list = $this->get_promotion('秒杀',$shop_id,$flag,'',1);
+		return $list;
+	}
+	
+	public function get_promotion_demo() {
+		$this->change_shop(1);
+		$a = $this->get_promotion('主题','',1);
+		dump($a[0]);
+	}
+	/*get shop promotion*/
+	public function get_promotion($tag_cat,$shop_id="",$flag="",$tag_id="",$recent="") {
+		if( empty($shop_id))
+		$shop_id = $this->shop_id;
+		$list = D("Promotion")->get_promotion($tag_cat,$shop_id,$flag,$tag_id,$recent);
+		return $list;
+	}
+
 	public function setup_promotion_demo() {
 		$this->change_shop(1);
 		$this->setup_promotion('44');

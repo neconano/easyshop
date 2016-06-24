@@ -4,6 +4,10 @@ namespace Api\Controller;
 /*
 *1.shop定义为分类，商铺，品牌都是分类
 *2.商品的归属一律使用shop_index
+*3.定义为属性-->明星单品，换新搭配，大牌聚会
+*
+*
+*
 */
 
 class ShopController extends BaseController {
@@ -14,12 +18,6 @@ class ShopController extends BaseController {
 	/*add admin to shop*/
 	public function add_shop_admin($uid,$shop_id) {
 		$this->set($uid,'用户',$shop_id);
-	}
-
-	/*change current shop*/
-	public function change_shop($id) {
-		session('shop_id',$id);
-		$this->shop_id = $id;
 	}
 	
 	public function setup_brand_demo() {
