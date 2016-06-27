@@ -3,7 +3,7 @@ namespace Api\Model;
 
 use Think\Model\RelationModel;
 
-class ShopModel extends RelationModel {
+class ShopModel extends BaseModel {
 	protected $trueTableName = 'shop'; 
 
 	protected $_validate = array(
@@ -17,18 +17,18 @@ class ShopModel extends RelationModel {
         /*check name repeat*/
         $w['shop'] = $dat['shop'];
         $w['id'] = array("neq",$id);
-        if(D("Shop")->where($w)->find())
+        if($this->where($w)->find())
           E('设置失败，数据异常');
-        D("Shop")->create($dat);
-        D("Shop")->save();
+        $this->create($dat);
+        $this->save();
       }else{
         $dat['shop_cat'] = $shop_cat;
         /*check name repeat*/
         $w['shop'] = $dat['shop'];
-        if(D("Shop")->where($w)->find())
+        if($this->where($w)->find())
           E('新增失败，同一商铺名称不能重复');
-        D("Shop")->create($dat);
-        return D("Shop")->add();
+        $this->create($dat);
+        return $this->add();
       }
    }
 

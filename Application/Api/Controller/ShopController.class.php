@@ -4,9 +4,7 @@ namespace Api\Controller;
 /*
 *1.shop定义为分类，商铺，品牌都是分类
 *2.商品的归属一律使用shop_index
-*3.定义为属性-->明星单品，换新搭配，大牌聚会
-*
-*
+*3.定义为属性-->明星单品，大牌聚会
 *
 */
 
@@ -36,10 +34,10 @@ class ShopController extends BaseController {
 		if($delete == 1){
 			$w['id'] = $id;
 			$d['is_delete'] = 1;
-			D("Shop")->where($w)->save($d);
+			D2("Shop")->where($w)->save($d);
 			return true;
 		}
-		D("Shop")->setup_shop($shop,$shop_cat,$id);
+		D2("Shop")->setup_shop($shop,$shop_cat,$id);
 	}
 
 	public function hook2shop_set_demo() {
@@ -52,15 +50,20 @@ class ShopController extends BaseController {
 			$this->_init_shop();
 		else
 			$this->shop_id = $shop_id;
-		D("ShopIndex")->hook2shop_set($tag_id, $tag_cat, $id, $this->shop_id);
+		D2("ShopIndex")->hook2shop_set($tag_id, $tag_cat, $id, $this->shop_id);
 	}
 	
 	/*hook: filter to shop*/
-	public function hook2shop_get($result,$tag_cat) {
+	public function hook2shop_get($result='',$tag_cat='') {
+		if(empty($shop_id))
+			$this->_init_shop();
+		else
+			$this->shop_id = $shop_id;
 		$w['tag_cat'] = $tag_cat;
-		$shops = D("ShopIndex")->where($w)->select();
+		$w['shop_id'] = $this->shop_id;
+		$shops = D2("ShopIndex")->where($w)->select();
 		foreach($shops as $v){
-			$shop_list[] = $v['id'];
+			$shop_list[] = $v['tag_id'];
 		}
 		foreach($result as $v){
 			if( in_array($v['id'],$shop_list))

@@ -1,15 +1,98 @@
 <?php
 namespace App\Controller;
-use Think\Controller;
 
-// 本类由系统自动生成，仅供测试用途
-class IndexController extends Controller {
-	function _initialize() {
-		// $_GET = I("get.");
-		// $_POST = I("post.");
+class IndexController extends BaseController {
+
+	function _init() {
+		if( !empty(I("get.shop_id")) || !empty(I("post.shop_id")) )
+		$this->change_shop(1);
 	}
 
-	public function index() {
+	/*home page*/
+	public function Index() {
+		$this->_init_shop();
+		if(I("get.banner")){
+			$list = R ( "Api/Banner/get_list" );
+			$this->assign ( "list", $list );
+			$page = $this->fetch("Home:banner");
+			echo $page;
+			exit;
+		}
+		if(I("get.seckill")){
+			$list = R ( "Api/Promotion/get_home_seckill" );
+			$this->assign ( "list", $list );
+			$page = $this->fetch("Home:seckill");
+			echo $page;
+			exit;
+		}
+		if(I("get.star_goods")){
+			
+		}
+		if(I("get.dpjh")){
+			
+		}
+		$this->display ();
+	}
+
+	/*HuanXinDaPei Promotion*/
+	public function Hxdp() {
+		if(I("get.list")){
+			
+		}
+		if(I("get.info")){
+			
+		}
+		if(I("get.detail")){
+			
+		}
+		$this->display ();
+	}
+
+	/*Shop Promotion*/
+	public function Shop() {
+		if(I("get.info")){
+			
+		}
+		$this->display ();
+	}
+
+	/*Brand Promotion*/
+	public function Brand() {
+		if(I("get.list")){
+			
+		}
+		$this->display ();
+	}
+
+	/*Seckill*/
+	public function Seckill() {
+		if(I("get.list")){
+			
+		}
+		$this->display ();
+	}
+
+	/*Search*/
+	public function Search() {
+
+		$this->display ();
+	}
+
+	/*Coupon*/
+	public function Coupon() {
+
+		$this->display ();
+	}
+
+	/*Goods*/
+	public function Goods() {
+
+		$this->display ();
+	}
+
+
+
+	public function index_old() {
 		// if (I("get.uid")) {
 			$info = R ( "Api/Api/gettheme" );
 			C ( "DEFAULT_THEME", $info ["theme"] );

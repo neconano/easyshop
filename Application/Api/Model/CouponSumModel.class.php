@@ -3,7 +3,7 @@ namespace Api\Model;
 
 use Think\Model\RelationModel;
 
-class CouponSumModel extends RelationModel {
+class CouponSumModel extends BaseModel {
 	protected $trueTableName = 'coupon_sum'; 
 	protected $_auto = array ( 
 		array('dateline','time',1,'function'),
@@ -18,7 +18,7 @@ class CouponSumModel extends RelationModel {
 		$id = $this->add();
 		if($id){
 			$coupon = $this->where("id = '$id'")->find();
-			D("coupon")->make_coupon_by_sum($coupon);
+			D2("coupon")->make_coupon_by_sum($coupon);
 			/*relation to shop*/
 			$menuresult = R ( "Api/Shop/hook2shop_set",array($id, '优惠券sum', '', $dat['shop_id']) );
 		}

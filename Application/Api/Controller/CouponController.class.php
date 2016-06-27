@@ -20,7 +20,7 @@ class CouponController extends BaseController {
 		$dat['title'] = $title;
 		$dat['num'] = $num;
 		$dat['desription'] = $desription;
-		D("CouponSum")->make_coupon($dat);
+		D2("CouponSum")->make_coupon($dat);
 	}
 
 	public function poll_coupon_demo() {
@@ -31,7 +31,7 @@ class CouponController extends BaseController {
 	public function poll_coupon($uid="") {
 		$username = session("wadmin");
 		$admin_info = A("Api")->get_admin_info($username,$uid);
-		$result = D("Coupon")->poll_coupon($admin_info['shop']['shop_id']);
+		$result = D2("Coupon")->poll_coupon($admin_info['shop']['shop_id']);
 		return $result;
 	}
 
@@ -42,7 +42,7 @@ class CouponController extends BaseController {
 	}
 	/*push coupon check notice*/
 	public function push_coupon($id) {
-		D("Coupon")->push_coupon($id);
+		D2("Coupon")->push_coupon($id);
 	}
 
 	public function give_coupon_demo() {
@@ -52,7 +52,7 @@ class CouponController extends BaseController {
 	/*give_coupon*/
 	public function give_coupon($id="",$coupon_code="") {
 		$admin_info = A("Api")->get_admin_info(session("wadmin"));
-		D("Coupon")->give_coupon($admin_info['id'],$id,$coupon_code);
+		D2("Coupon")->give_coupon($admin_info['id'],$id,$coupon_code);
 	}
 
 	public function take_coupon_demo() {
@@ -62,7 +62,7 @@ class CouponController extends BaseController {
 	}
 	/*take coupon*/
 	public function take_coupon($id,$tel_user) {
-		D("Coupon")->take_coupon($id,$tel_user);
+		D2("Coupon")->take_coupon($id,$tel_user);
 	}
 
 

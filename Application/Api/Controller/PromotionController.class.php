@@ -17,7 +17,7 @@ class PromotionController extends BaseController {
 	}
 	/*get the promotion*/
 	public function get_the_promotion($promotion_id,$flag) {
-		$list = D("Promotion")->get_promotion('','',$flag,$promotion_id);
+		$list = D2("Promotion")->get_promotion('','',$flag,$promotion_id);
 		return $list;
 	}
 	
@@ -42,13 +42,14 @@ class PromotionController extends BaseController {
 	public function get_promotion($tag_cat,$shop_id="",$flag="",$tag_id="",$recent="") {
 		if( empty($shop_id))
 		$shop_id = $this->shop_id;
-		$list = D("Promotion")->get_promotion($tag_cat,$shop_id,$flag,$tag_id,$recent);
+		$list = D2("Promotion")->get_promotion($tag_cat,$shop_id,$flag,$tag_id,$recent);
 		return $list;
 	}
 
 	public function setup_promotion_demo() {
 		$this->change_shop(1);
-		$this->setup_promotion('44');
+		//$this->setup_promotion('44');
+		$this->setup_promotion('444432','秒杀');
 	}
 	/*setup*/
 	/*promotion must belong to an shop */
@@ -56,10 +57,10 @@ class PromotionController extends BaseController {
 		if($delete == 1){
 			$w['id'] = $id;
 			$d['is_delete'] = 1;
-			D("Promotion")->where($w)->save($d);
+			D2("Promotion")->where($w)->save($d);
 			return true;
 		}
-		D("Promotion")->setup_promotion($promotion,$promotion_cat,$id);
+		D2("Promotion")->setup_promotion($promotion,$promotion_cat,$id);
 		return true;
 	}
 	
@@ -73,7 +74,7 @@ class PromotionController extends BaseController {
 	public function hook2promotion_set($promotion_id, $tag_id, $tag_cat, $data_arr=array(), $id='') {
 		if(empty($promotion_id) || empty($tag_id) || empty($tag_cat))
 			return false;
-		D("PromotionIndex")->hook2promotion_set($promotion_id, $tag_id, $tag_cat, $data_arr, $id);
+		D2("PromotionIndex")->hook2promotion_set($promotion_id, $tag_id, $tag_cat, $data_arr, $id);
 	}
 
 	/*hook: get goods belong promotion*/
@@ -82,7 +83,7 @@ class PromotionController extends BaseController {
 		$tag_cat = '商品';
 		$w['tag_id'] = $tag_id;
 		$w['tag_cat'] = $tag_cat;
-		return D("PromotionIndex")->where($w)->find();
+		return D2("PromotionIndex")->where($w)->find();
 	}
 
 

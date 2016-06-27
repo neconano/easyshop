@@ -1,17 +1,16 @@
 <?php
-namespace Api\Controller;
+namespace App\Controller;
 use Think\Controller;
 
 class BaseController extends Controller {
-
-	protected $shop_id;
-
 	function _initialize() {
-		$this->_init_shop();
+		// $_GET = I("get.");
+		// $_POST = I("post.");
 		$this->_init();
 	}
 
 	function _init() {
+
 	}
 
 	function _init_shop() {
@@ -20,11 +19,12 @@ class BaseController extends Controller {
 			session('shop_id',1);
 		}
 		$this->shop_id = session('shop_id');
-		// /*shop_id is null*/
-		// if( empty($this->shop_id) ){
-		// 	session(null);
-		// 	$this->success ( '用户状态已失效！', U ( "Admin/Login/index" ) );
-		// }
+		/*shop_id is null*/
+		if( empty($this->shop_id) ){
+			session(null);
+			//$this->success ( '用户状态已失效！');
+			exit;
+		}
 	}
 
 	/*string contain*/
@@ -37,23 +37,15 @@ class BaseController extends Controller {
 		} 
 	} 
 
-
 	/*change current shop*/
 	public function change_shop($id) {
 		session('shop_id',$id);
 		$this->shop_id = $id;
 	}
-
 }
-		
+
+
 /*model redrect*/
 function D2($name='',$layer='') {
 	return D('Api/'.$name, $layer) ;
 }
-
-
-
-
-
-
-

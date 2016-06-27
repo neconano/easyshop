@@ -3,7 +3,7 @@ namespace Api\Model;
 
 use Think\Model\RelationModel;
 
-class CouponModel extends RelationModel {
+class CouponModel extends BaseModel {
 	protected $trueTableName = 'coupon'; 
 	private $code_list = array();
 
