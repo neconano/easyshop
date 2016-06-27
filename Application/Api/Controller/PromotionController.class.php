@@ -7,9 +7,7 @@ namespace Api\Controller;
 *3.promotion类型为theme,seckill,coupon
 */
 
-
 class PromotionController extends BaseController {
-	
 
 	public function get_the_promotion_demo() {
 		$promotion_id = 1;
