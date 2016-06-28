@@ -19,31 +19,45 @@ class IndexController extends BaseController {
 			exit;
 		}
 		if(I("get.seckill")){
-			$list = R ( "Api/Promotion/get_home_seckill" );
+			$list = R ( "Api/Cat/get_level" ,array("限时购"));
 			$this->assign ( "list", $list );
-			$page = $this->fetch("Home:seckill");
+			$page = $this->fetch("Home:banner");
 			echo $page;
 			exit;
 		}
 		if(I("get.star_goods")){
-			
+			$list = R ( "Api/Cat/get_level" ,array("明星单品"));
+			$this->assign ( "list", $list );
+			$page = $this->fetch("Home:banner");
+			echo $page;
+			exit;
 		}
 		if(I("get.dpjh")){
-			
+			$list = R ( "Api/Cat/get_level" ,array("大牌钜惠"));
+			dump($list);
+			exit;
 		}
 		$this->display ();
 	}
 
 	/*HuanXinDaPei Promotion*/
 	public function Hxdp() {
+		if(I("get.index")){
+			$list = R ( "Api/Cat/get_level" ,array("焕新搭配"));
+			dump($list);
+			exit;
+		}
 		if(I("get.list")){
-			
+			$cat_id = I("get.cat_id");
+			$cat_id = 14;
+			$list = R ( "Api/Cat/get_level" ,array("焕新搭配",1,$cat_id));
+			dump($list);
+			exit;
 		}
-		if(I("get.info")){
-			
-		}
-		if(I("get.detail")){
-			
+		if(I("get.page")){
+			$cat_id = I("get.cat_id");
+			$cat_id = 14;
+			$list = R ( "Api/Cat/get_cat" ,array($cat_id));
 		}
 		$this->display ();
 	}

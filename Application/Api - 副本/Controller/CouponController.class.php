@@ -1,6 +1,11 @@
 <?php
 namespace Api\Controller;
 
+/*
+*1.coupon是商品的附加属性，所以包含tag_id和tag_cat
+*2.coupon_sum是生成工具表
+*/
+
 class CouponController extends BaseController {
 
 	public function make_coupon_demo() {

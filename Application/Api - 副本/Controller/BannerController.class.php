@@ -12,7 +12,7 @@ class BannerController extends BaseController {
 	/*get banners*/
 	public function get_list() {
 		$list = $this->banner->order("sort desc,id desc")->select();
-		$list = R ( "Api/Shop/hook2_get" ,array($list,'banner') );
+		$list = R ( "Api/Shop/hook2shop_get" ,array($list,'banner') );
 		return $list;
 	}
 
@@ -26,18 +26,19 @@ class BannerController extends BaseController {
 		$dat['sort'] = $_POST['sort'] ? $_POST['sort'] : 1;
 		$dat['img'] = $_POST['img'] ? $_POST['img'] : 1;
 		$id = $this->banner->add($dat);
-		R ( "Api/Shop/hook2_set" ,array($id, 'banner') );
+		R ( "Api/Shop/hook2shop_set" ,array($id, 'banner') );
 	}
 
 	/*U*/
 	public function update() {
-		$w['id'] = $_POST['id'];
-		$check = $this->banner->where($w)->find();
-		if( empty( $check) )
-			return false;
+		$id = $_POST['id'];
+		if(!empty($_POST['url']))
+			$dat['url'] = $_POST['url'];
+		if(!empty($_POST['sort']))
+			$dat['sort'] = $_POST['sort'];
 		if(!empty($_POST['img']))
 			$dat['img'] = $_POST['img'];
-		$this->banner->where($w)->save($_POST);
+		$this->banner->where("id = '$id'")->save($dat);
 	}
 
 	/*D*/
