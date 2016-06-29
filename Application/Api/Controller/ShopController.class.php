@@ -17,6 +17,17 @@ class ShopController extends BaseController {
 		$this->hook2cat_set($tag_id, $tag_cat, $this->shop_id);
 	}
 	
+	/*get shop cat*/
+	public function get_shop_cat($tag_cat,$shop_id='') {
+		if(empty($shop_id))
+			$this->_init_shop();
+		else
+			$this->shop_id = $shop_id;
+		$w['tag_cat'] = $tag_cat;
+		$cats = D2("Cat")->where($w)->select();
+		return $cats;
+	}	
+
 	/*CUD操作*/
 	public function setup_shop_demo() {
 		$dat['name'] = '啊啊啊';
@@ -28,12 +39,12 @@ class ShopController extends BaseController {
 	}
 
 	/*hook: filter to shop*/
-	public function hook2_get($result,$tag_cat, $shop_id='') {
+	public function hook2_get($result) {
 		if(empty($shop_id))
 			$this->_init_shop();
 		else
 			$this->shop_id = $shop_id;
-		return $this->hook2cat_get($result, $tag_cat, $this->shop_id);
+		return R ( "Api/Cat/hook2cat_get" ,array($result, 'cat', $this->shop_id));
 	}
 
 

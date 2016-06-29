@@ -58,6 +58,8 @@ class IndexController extends BaseController {
 			$cat_id = I("get.cat_id");
 			$cat_id = 14;
 			$list = R ( "Api/Cat/get_cat" ,array($cat_id));
+			dump($list);
+			exit;
 		}
 		$this->display ();
 	}
@@ -65,7 +67,10 @@ class IndexController extends BaseController {
 	/*Shop Promotion*/
 	public function Shop() {
 		if(I("get.info")){
-			
+			$list = R ( "Api/Shop/get_shop_cat" ,array('店内活动'));
+			dump($list);
+			dump( unserialize($list[0]['text']) );
+			exit;
 		}
 		$this->display ();
 	}
@@ -73,7 +78,11 @@ class IndexController extends BaseController {
 	/*Brand Promotion*/
 	public function Brand() {
 		if(I("get.list")){
-			
+			$cat_id = I("get.brand_id");
+			$cat_id = 25;
+			$list = R ( "Api/Brand/get_promotion_list" ,array($cat_id));
+			//dump($list);
+			exit;
 		}
 		$this->display ();
 	}
