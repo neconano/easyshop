@@ -3,6 +3,24 @@ namespace Api\Controller;
 
 class CouponController extends BaseController {
 
+
+	public function setup_demo() {
+		$tag_id = 57;
+		$cat_id = 16;
+		$this->hook2_set($tag_id, $cat_id);
+	}
+
+	public function get_my_coupon() {
+		$w['tel'] = '12345678910';
+		$list = $this->where($w)->select();
+		return $list;
+	}
+
+	/*hook: relation to coupon*/
+	public function hook2_set($tag_id, $cat_id) {
+		$this->hook2cat_set($tag_id, 'coupon', $cat_id);
+	}
+
 	public function make_coupon_demo() {
 		$this->make_coupon('11',3,"11","11","11");
 	}

@@ -111,7 +111,7 @@ class IndexController extends BaseController {
 			$tel = I("get.tel");
 			$cat_id = I("get.cat_id");
 			$cat_id = 37;
-			$list = R ( "Api/Cat/get_cat" ,array($cat_id));
+			$list = R ( "Api/Coupon/get_my_coupon" );
 			dump($list);
 			exit;
 		}
