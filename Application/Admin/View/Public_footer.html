@@ -27,30 +27,20 @@
 			$('#breadcrumbs ul li').eq(1).html('用户管理');
 			$('#main_iframe').attr("src","{:U('Admin/User/index')}");
 		});
-		/* 活动管理 */
+		/* 微信管理 */
 		$('.nav.nav-list li').eq(5).click(function() {
 			$('.nav.nav-list li').removeClass('active');
 			$(this).addClass('active');
-			$('#breadcrumbs ul li').eq(1).html('活动管理');
-			$('#main_iframe').attr("src","{:U('Admin/Promotion/index')}");
+			$('#breadcrumbs ul li').eq(1).html('微信管理');
+			$('#main_iframe').attr("src","{:U('Admin/Weixin/index')}");
 		});
-
-
-		// /* 微信管理 */
-		// $('.nav.nav-list li').eq(5).click(function() {
-		// 	$('.nav.nav-list li').removeClass('active');
-		// 	$(this).addClass('active');
-		// 	$('#breadcrumbs ul li').eq(1).html('微信管理');
-		// 	$('#main_iframe').attr("src","{:U('Admin/Weixin/index')}");
-		// });
-		// /* 扩展工具 */
-		// $('.nav.nav-list li').eq(6).click(function() {
-		// 	$('.nav.nav-list li').removeClass('active');
-		// 	$(this).addClass('active');
-		// 	$('#breadcrumbs ul li').eq(1).html('技术支持');
-		// 	$('#main_iframe').attr("src","{:U('Admin/Util/index')}");
-		// });
-
+		/* 扩展工具 */
+		$('.nav.nav-list li').eq(6).click(function() {
+			$('.nav.nav-list li').removeClass('active');
+			$(this).addClass('active');
+			$('#breadcrumbs ul li').eq(1).html('技术支持');
+			$('#main_iframe').attr("src","{:U('Admin/Util/index')}");
+		});
 		</script>
 		</body>
 </html>

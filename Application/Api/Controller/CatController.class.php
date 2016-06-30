@@ -73,11 +73,11 @@ class CatController extends BaseController {
 
 	/*CUD操作*/
 	public function setup_demo() {
-		$data['img'] = '22233';
-		$data['name'] = 'ttt44';
+		$data['img'] = '6633';
+		$data['name'] = '6633';
 		//$data['text'] = serialize('%……！@#￥%！@##￥%sdfsf<body class="" id="grid">');
-		$data['p_id'] = '14';
-		$this->setup($data,'焕新搭配');
+		$data['p_id'] = '37';
+		$this->setup($data,'限时购');
 	}
 	public function setup($data,$tag_cat,$delete=0) {
 		D2("Cat")->opt_data($data,$tag_cat,$delete);

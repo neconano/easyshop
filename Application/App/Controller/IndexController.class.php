@@ -10,7 +10,6 @@ class IndexController extends BaseController {
 
 	/*home page*/
 	public function Index() {
-		$this->_init_shop();
 		if(I("get.banner")){
 			$list = R ( "Api/Banner/get_list" );
 			$this->assign ( "list", $list );
@@ -81,7 +80,7 @@ class IndexController extends BaseController {
 			$cat_id = I("get.brand_id");
 			$cat_id = 25;
 			$list = R ( "Api/Brand/get_promotion_list" ,array($cat_id));
-			//dump($list);
+			dump($list);
 			exit;
 		}
 		$this->display ();
@@ -90,20 +89,32 @@ class IndexController extends BaseController {
 	/*Seckill*/
 	public function Seckill() {
 		if(I("get.list")){
-			
+			$cat_id = I("get.cat_id");
+			$cat_id = 37;
+			$list = R ( "Api/Cat/get_level" ,array("限时购",1,$cat_id));
+			dump($list);
+			exit;
 		}
-		$this->display ();
-	}
-
-	/*Search*/
-	public function Search() {
-
+		if(I("get.page")){
+			$cat_id = I("get.cat_id");
+			$cat_id = 37;
+			$list = R ( "Api/Cat/get_cat" ,array($cat_id));
+			dump($list);
+			exit;
+		}
 		$this->display ();
 	}
 
 	/*Coupon*/
 	public function Coupon() {
-
+		if(I("get.list")){
+			$tel = I("get.tel");
+			$cat_id = I("get.cat_id");
+			$cat_id = 37;
+			$list = R ( "Api/Cat/get_cat" ,array($cat_id));
+			dump($list);
+			exit;
+		}
 		$this->display ();
 	}
 
@@ -113,6 +124,11 @@ class IndexController extends BaseController {
 		$this->display ();
 	}
 
+	/*Search*/
+	public function Search() {
+		
+		$this->display ();
+	}
 
 
 	public function index_old() {

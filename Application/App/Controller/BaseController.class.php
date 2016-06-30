@@ -7,6 +7,7 @@ class BaseController extends Controller {
 		// $_GET = I("get.");
 		// $_POST = I("post.");
 		$this->_init();
+		$this->_init_shop();
 	}
 
 	function _init() {
@@ -22,7 +23,7 @@ class BaseController extends Controller {
 		/*shop_id is null*/
 		if( empty($this->shop_id) ){
 			session(null);
-			//$this->success ( '用户状态已失效！');
+			$this->error ( '店铺状态已失效！');
 			exit;
 		}
 	}
