@@ -107,11 +107,58 @@ class IndexController extends BaseController {
 
 	/*Coupon*/
 	public function Coupon() {
+		if(I("get.checktel")){
+			if( empty(session('tel')) ){
+				return false;
+			}
+			return true;
+		}
+		if(I("get.settel")){
+			session('tel',I("get.tel"));
+			return true;
+		}
+		/*get my all coupons*/
 		if(I("get.list")){
-			$tel = I("get.tel");
-			$cat_id = I("get.cat_id");
-			$cat_id = 37;
-			$list = R ( "Api/Coupon/get_my_coupon" );
+			if( empty(session('tel')) ){
+				/*ask for tel*/
+			}else{
+				$list = R ( "Api/Coupon/get_my_list" );
+				dump($list);
+			}
+			exit;
+		}
+		if(I("get.page")){
+			$coupon_id = I("get.coupon_id");
+			$dat = R ( "Api/Coupon/get_detail",array($coupon_id));
+			dump($dat);
+			exit;
+		}
+		if(I("get.getnew")){
+			if( empty(session('tel')) ){
+				/*ask for tel*/
+			}else{
+				$cat_id = I("get.cat_id");
+				$dat = R ( "Api/Coupon/get_new",array($cat_id) );
+				dump($list);
+			}
+			exit;
+		}
+		/*ask for use coupon*/
+		if(I("get.use")){
+			$coupon_id = I("get.coupon_id");
+			$dat = R ( "Api/Coupon/push_coupon",array($cat_id) );
+			dump($list);
+			exit;
+		}
+		if(I("get.poll")){
+			$dat = R ( "Api/Coupon/poll_coupon" );
+			dump($list);
+			exit;
+		}
+		if(I("get.give")){
+			$coupon_id = I("get.coupon_id");
+			$coupon_code = I("get.coupon_code");
+			$dat = R ( "Api/Coupon/give_coupon",array($coupon_id,$coupon_code) );
 			dump($list);
 			exit;
 		}
@@ -120,17 +167,41 @@ class IndexController extends BaseController {
 
 	/*Goods*/
 	public function Goods() {
-
-		$this->display ();
+		if(I("get.id")){
+			$where ["id"] = I("get.id");
+			$result = M ( "Good" )->where ( $where )->find ();
+			if ($result) {
+				$this->ajaxReturn ( $result );
+			}
+			exit;
+		}
+		//$this->display ();
 	}
 
 	/*Search*/
 	public function Search() {
-		
-		$this->display ();
+		if(I("get.brand")){
+			$w ["name"] = array("like","%".I("get.brand")."%");
+			$w ["tag_cat"] = '品牌';
+			$cat = D2("Cat")->where($w)->find();
+			if( !empty($cat)){
+				$cat_id = I("get.cat_id");
+				$list = R ( "Api/Cat/get_cat" ,array($cat_id));
+				dump($list);
+				exit;
+			}
+		}
 	}
 
 
+
+
+
+
+
+
+
+	
 	public function index_old() {
 		// if (I("get.uid")) {
 			$info = R ( "Api/Api/gettheme" );

@@ -10,10 +10,42 @@ class CouponController extends BaseController {
 		$this->hook2_set($tag_id, $cat_id);
 	}
 
-	public function get_my_coupon() {
-		$w['tel'] = '12345678910';
-		$list = $this->where($w)->select();
+	public function get_my_list() {
+		$w['tel'] = session('tel');
+		$list = D2("Coupon")->where($w)->select();
 		return $list;
+	}
+
+	public function get_detail($coupon_id) {
+		$w['id'] = $coupon_id;
+		$coupon = D2("Coupon")->where($w)->find();
+		$dats = R ( "Api/Cat/get_cat_bytag",array($coupon['sum_id'],"coupon","焕新搭配"));
+		return $dats[0];
+	}
+
+	public function get_new($cat_id) {
+		if( empty(session('tel')) ){
+			return false;
+		}
+		$w['tag_cat'] = 'coupon';
+		$w['cat_id'] = $cat_id;
+		$dat = D2("CatIndex")->where($w)->find();
+		if(empty($dat))
+		return false;
+		$w2['id'] = $dat['tag_id'];
+		$dat2 = D2("CouponSum")->where($w2)->find();
+		if(empty($dat2))
+		return false;
+		$w3['sum_id'] = $dat['tag_id'];
+		$w3['is_delete'] = 0;
+		$w3['tel_user'] = 0;
+		$w3['is_use'] = 0;
+		$dat3 = D2("Coupon")->where($w3)->find();
+		if(empty($dat3))
+		return false;
+		$dat3['tel_user'] = session('tel');
+		D2("Coupon")->where($w3)->save($dat3);
+		return $dat3;
 	}
 
 	/*hook: relation to coupon*/
@@ -41,7 +73,7 @@ class CouponController extends BaseController {
 		dump($a);
 	}
 	/*poll coupon check notice*/
-	public function poll_coupon($uid="") {
+	public function poll_coupon() {
 		$username = session("wadmin");
 		$admin_info = A("Api")->get_admin_info($username,$uid);
 		$result = D2("Coupon")->poll_coupon($admin_info['shop']['shop_id']);
@@ -66,16 +98,6 @@ class CouponController extends BaseController {
 	public function give_coupon($id="",$coupon_code="") {
 		$admin_info = A("Api")->get_admin_info(session("wadmin"));
 		D2("Coupon")->give_coupon($admin_info['id'],$id,$coupon_code);
-	}
-
-	public function take_coupon_demo() {
-		$id = $this->coupon_testid;
-		$tel_user = '12345678910';
-		$this->take_coupon($id,$tel_user);
-	}
-	/*take coupon*/
-	public function take_coupon($id,$tel_user) {
-		D2("Coupon")->take_coupon($id,$tel_user);
 	}
 
 

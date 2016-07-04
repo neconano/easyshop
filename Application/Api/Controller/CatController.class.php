@@ -9,6 +9,7 @@ class CatController extends BaseController {
 		return $this->get_level($tag_cat,0,'',$need_arr);
 	}
 
+	/*get cats*/
 	public function get_level($tag_cat,$level=0,$cat_id='',$need_arr='') {//cat_id所属cat
 		$w['tag_cat_level'] = $level;
 		$w['tag_cat'] = $tag_cat;
@@ -26,6 +27,7 @@ class CatController extends BaseController {
 		return $dats;
 	}
 
+	/*get cat*/
 	public function get_cat($cat_id) {
 		/*店铺过滤*/
 		if( empty( R ( "Api/Shop/hook2_get" ,array($cat_id)) ) )
@@ -59,6 +61,18 @@ class CatController extends BaseController {
 			// $cat_list = R ( "Api/Shop/hook2_get" ,array($cat_list));
 			$cat['list'] = $cat_list;
 		}
+		if($tag_cat == '品牌' ){
+			/*获得品牌所属活动*/
+			$cat['promotion'] = R ( "Api/Cat/get_level" ,array("大牌钜惠",0,$cat_id));
+			/*获得品牌所属商品*/
+			$w24['cat_id'] = $cat_id;
+			$w24['tag_cat'] = 'goods';
+			$cat_s = D2("CatIndex")->where($w24)->select();
+			foreach($cat_s as $v){
+				$w311['id'] = $v['tag_id'];
+				$cat['goods'] = M ( "Good" )->where($w311)->find();
+			}
+		}
 		return $cat;
 	}
 	
@@ -69,6 +83,20 @@ class CatController extends BaseController {
 		$cat_list = R ( "Api/Shop/hook2_get" ,array($cats));
 		return $cat_list;
 	}
+
+	/*get cat*/
+	public function get_cat_bytag($tag_id,$tag_cat,$cat_name) {
+		if( empty($tag_id) && empty($tag_cat) && empty($cat_name))
+			return false;
+		$w['tag_id'] = $tag_id;
+		$w['tag_cat'] = $tag_cat;
+		$w['cat_name'] = $cat_name;
+		$dats = D2("Cat")->where($w)->select();
+		if( empty($dats) )
+			return false;
+		return $dats;
+	}
+
 
 
 	/*CUD操作*/

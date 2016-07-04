@@ -40,16 +40,6 @@ class CouponModel extends BaseModel {
 		$this->where($w)->save($dat);
 	}
 
-	/*take_coupon*/
-	public function take_coupon($id,$tel_user) {
-		$w['id'] = $id;
-		if(empty($tel_user))
-		return false;
-		$dat['tel_user'] = $tel_user;
-		$this->where($w)->save($dat);
-	}
-
-
 	/*生成优惠券*/
 	public function make_coupon_by_sum($dat) {
 		$num = $dat['num'];
