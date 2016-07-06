@@ -108,7 +108,7 @@ class CatController extends BaseController {
 		$this->setup($data,'限时购');
 	}
 	public function setup($data,$tag_cat,$delete=0) {
-		D2("Cat")->opt_data($data,$tag_cat,$delete);
+		return D2("Cat")->opt_data($data,$tag_cat,$delete);
 	}
 
 	/**/

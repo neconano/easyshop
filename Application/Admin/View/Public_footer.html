@@ -1,46 +1,68 @@
 		<script type="text/javascript">
-		/* 菜单管理 */
+
 		$('.nav.nav-list li').eq(1).click(function() {
 			$('.nav.nav-list li').removeClass('active');
 			$(this).addClass('active');
-			$('#breadcrumbs ul li').eq(1).html('菜单管理');
+			$('#breadcrumbs ul li').eq(1).html('品牌管理');
+			$('#main_iframe').attr("src","{:U('Admin/Index/brand')}");
+		});
+
+		$('.nav.nav-list li').eq(2).click(function() {
+			$('.nav.nav-list li').removeClass('active');
+			$(this).addClass('active');
+			$('#breadcrumbs ul li').eq(1).html('店内活动');
+			$('#main_iframe').attr("src","{:U('Admin/Index/dnhd')}");
+		});
+
+		$('.nav.nav-list li').eq(3).click(function() {
+			$('.nav.nav-list li').removeClass('active');
+			$(this).addClass('active');
+			$('#breadcrumbs ul li').eq(1).html('大牌钜惠');
+			$('#main_iframe').attr("src","{:U('Admin/Index/dpjh')}");
+		});
+
+		$('.nav.nav-list li').eq(4).click(function() {
+			$('.nav.nav-list li').removeClass('active');
+			$(this).addClass('active');
+			$('#breadcrumbs ul li').eq(1).html('焕新搭配');
+			$('#main_iframe').attr("src","{:U('Admin/Index/hxdp')}");
+		});
+
+		$('.nav.nav-list li').eq(5).click(function() {
+			$('.nav.nav-list li').removeClass('active');
+			$(this).addClass('active');
+			$('#breadcrumbs ul li').eq(1).html('限时购');
+			$('#main_iframe').attr("src","{:U('Admin/Index/xsg')}");
+		});
+
+		$('.nav.nav-list li').eq(6).click(function() {
+			$('.nav.nav-list li').removeClass('active');
+			$(this).addClass('active');
+			$('#breadcrumbs ul li').eq(1).html('明星单品');
+			$('#main_iframe').attr("src","{:U('Admin/Index/mxdp')}");
+		});
+
+		$('.nav.nav-list li').eq(7).click(function() {
+			$('.nav.nav-list li').removeClass('active');
+			$(this).addClass('active');
+			$('#breadcrumbs ul li').eq(1).html('优惠券');
+			$('#main_iframe').attr("src","{:U('Admin/Index/coupon')}");
+		});
+
+		$('.nav.nav-list li').eq(8).click(function() {
+			$('.nav.nav-list li').removeClass('active');
+			$(this).addClass('active');
+			$('#breadcrumbs ul li').eq(1).html('商品分类');
 			$('#main_iframe').attr("src","{:U('Admin/Menu/index')}");
 		});
-		/* 商品管理 */
-		$('.nav.nav-list li').eq(2).click(function() {
+
+		$('.nav.nav-list li').eq(9).click(function() {
 			$('.nav.nav-list li').removeClass('active');
 			$(this).addClass('active');
 			$('#breadcrumbs ul li').eq(1).html('商品管理');
 			$('#main_iframe').attr("src","{:U('Admin/Good/index')}");
 		});
-		/* 订单管理 */
-		$('.nav.nav-list li').eq(3).click(function() {
-			$('.nav.nav-list li').removeClass('active');
-			$(this).addClass('active');
-			$('#breadcrumbs ul li').eq(1).html('订单管理');
-			$('#main_iframe').attr("src","{:U('Admin/Order/index')}");
-		});
-		/* 用户管理 */
-		$('.nav.nav-list li').eq(4).click(function() {
-			$('.nav.nav-list li').removeClass('active');
-			$(this).addClass('active');
-			$('#breadcrumbs ul li').eq(1).html('用户管理');
-			$('#main_iframe').attr("src","{:U('Admin/User/index')}");
-		});
-		/* 微信管理 */
-		$('.nav.nav-list li').eq(5).click(function() {
-			$('.nav.nav-list li').removeClass('active');
-			$(this).addClass('active');
-			$('#breadcrumbs ul li').eq(1).html('微信管理');
-			$('#main_iframe').attr("src","{:U('Admin/Weixin/index')}");
-		});
-		/* 扩展工具 */
-		$('.nav.nav-list li').eq(6).click(function() {
-			$('.nav.nav-list li').removeClass('active');
-			$(this).addClass('active');
-			$('#breadcrumbs ul li').eq(1).html('技术支持');
-			$('#main_iframe').attr("src","{:U('Admin/Util/index')}");
-		});
+
 		</script>
 		</body>
 </html>

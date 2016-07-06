@@ -1,0 +1,132 @@
+<include file="Public:header"/>
+<style>
+	.sm-fix{
+		color: red;
+	}
+</style>
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+		<div class="widget-header">
+			<div class="widget-toolbar no-border">
+				<ul class="nav nav-tabs" id="myTab2">
+					<li class="active"><a data-toggle="tab" href="#home1">商城设置</a></li>
+					<li><a data-toggle="tab" href="#home2">添加/修改商场</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					<div id="home1" class="tab-pane in active">
+						<div class="well well-sm sm-fix"> 指定商城后才能操作其他内容 </div>
+						
+						<div class="row">
+							<div class="col-xs-12 no-padding-right">
+								<form class="form-horizontal" role="form" action="{:U('Admin/Index/setting')}" method="post">
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"
+											for="form-field-1"> 当前商城： </label>
+
+										<div class="col-sm-9">
+											{$info.name}
+										</div>
+									</div>
+
+									<div class="space-4"></div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"
+											for="form-field-2"> 选择商城： </label>
+
+										<div class="col-sm-9">
+											<select class="col-xs-10 col-sm-6">
+												<option></option>
+											</select>
+										</div>
+									</div>
+
+									<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button class="btn btn-info" type="submit">
+												<i class="icon-ok bigger-110"></i> 确定
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					
+					<div id="home2" class="tab-pane in">
+						<div class="row">
+							<div class="col-xs-12 no-padding-right">
+								<form class="form-horizontal" role="form" action="{:U('Admin/Index/set_shop')}" method="post">
+									<input type="hidden" value="add" name="method" >
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"
+											for="form-field-1"> 商城名称： </label>
+
+										<div class="col-sm-9">
+											<input type="text" id="form-field-1"
+												value="{$info.name}" name="name" class="col-xs-10 col-sm-6">
+										</div>
+									</div>
+
+									<div class="form-actions">
+										<button class="btn btn-primary btn_submit J_ajax_submit_btn"
+											type="submit">添加</button>
+										<a class="btn" href="">返回</a>
+									</div>
+								</form>
+							</div>
+						</div>
+
+
+						<div class="row">
+							<div class="col-xs-12 no-padding-right">
+								<div class="table-responsive">
+									<table id="sample-table-1"
+										class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<!-- <th class="center"><label> <input
+														type="checkbox" class="ace"> <span class="lbl"></span>
+												</label></th> -->
+												<th>ID</th>
+												<th>分类名称</th>
+												<th class="hidden-480">操作</th>
+											</tr>
+										</thead>
+
+										<tbody>
+										<volist name="menu" id="menu">
+											<tr>
+												<!-- <td class="center"><label> <input
+														type="checkbox" class="ace"> <span class="lbl"></span>
+												</label></td> -->
+
+												<td parent="{$menu.pid}">{$menu.id}</td>
+												<td class="hidden-480">{$menu.name}</td>
+
+												<td>
+												<!-- <a href="javascript:void(0);" onclick="addSubmenu(this)" class="addsub btn btn-white btn-sm">添加子类</a> -->
+												<a href="javascript:void(0);" onclick="reSubmenu(this)" class="btn btn-white btn-sm">修改</a><a class="J_ajax_del btn btn-white btn-sm" href="{:U('Admin/Menu/del',array('id'=>$menu['id']))}">删除</a></td>
+											</tr>
+										</volist>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+					
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

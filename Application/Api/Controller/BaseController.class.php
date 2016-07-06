@@ -34,7 +34,12 @@ class BaseController extends Controller {
 
 	/*change current shop*/
 	public function change_shop($id) {
-		session('shop_id',$id);
+		$w['id'] = $id;
+		$cat = D2("Cat")->where($w)->find();
+		if( empty($cat) )
+			return false;
+		session('shop_id',$cat[id]);
+		session('shop_name',$cat[name]);
 		$this->shop_id = $id;
 	}
 
