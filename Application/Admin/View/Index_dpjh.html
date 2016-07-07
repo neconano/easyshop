@@ -116,9 +116,6 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 						$('input[name="img_face"]').parent().append('<img src="__PUBLIC__'+json.img_face+'" id="img_face" style="max-width:650px" class="img-thumbnail">');
 						$('input[name="img_search"]').parent().append('<img src="__PUBLIC__'+json.img_search+'" id="img_search" style="max-width:650px" class="img-thumbnail">');
 						flag = false;
-					}else{
-						$('#img_face').attr("src","__PUBLIC__"+json.img_face);
-						$('#img_search').attr("src","__PUBLIC__"+json.img_search);
 					}
 				});
 				$('#myTab li').removeClass("active");

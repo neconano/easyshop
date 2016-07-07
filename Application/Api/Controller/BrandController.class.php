@@ -15,12 +15,16 @@ class BrandController extends BaseController {
 		$filename = ["img_face","img_search"];
 		foreach($filename as $v){
 			if ($_FILES [$v] ['name'] !== '') {
-				$img = $this->upload ();
+				$img = $this->upload ($_FILES [$v]);
 				$image = $img [$v] [savename];
 				$savepath = ltrim($img [$v] [savepath], ".");
 				$data[$v] = $savepath.$image;
 			}
 		}
+
+		dump($data);
+		dump($_FILES);
+exit;
 		$data['text'] = serialize($data);
 		return R ( "Api/Cat/setup" ,array($data, '大牌钜惠'));
 	}	
