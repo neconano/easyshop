@@ -5,21 +5,38 @@ class ShopController extends BaseController {
 	
 
 	// add 店内活动
-	public function add_dnhd($name,$id="") {
+	public function add_dnhd($name,$text,$top,$id="") {
 		if( empty($name) )
 			return false;
 		if( !empty($id) )
 		$data['id'] = $id;
 		$data['name'] = $name;
+		$data['top'] = $top;
+		$data['text'] = $text;
 		return R ( "Api/Cat/setup" ,array($data, '店内活动'));
 	}
 	
 	/*店内活动*/
-	public function get_dnhd() {
+	public function get_dnhd_list() {
+		$w['cat_id'] = $this->shop_id;
+		$w['cat_name'] = '商铺';
 		$w['tag_cat'] = '店内活动';
-		$cat = D2("Cat")->where($w)->find();
-		return $cat;
+		$count = D2("ViewCatIndex")->where($w)->count (); // 查询满足要求的总记录数
+		$Page = new \Think\Page($count,12);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+		$Page->setConfig('theme', "<ul class='pagination no-margin pull-right'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+		$show = $Page->show (); // 分页显示输出
+		$list['page'] = $show;
+		$result = D2("Cat")->where($w)->limit ( $Page->firstRow . ',' . $Page->listRows )->select ();
+		$list['result'] = $result;
+		return $list;
 	}	
+
+	public function get_dnhd($id) {
+		$w['id'] = $id;
+		$result = D2("Cat")->where($w)->find ();
+		return $result;
+	}	
+	
 
 	// set shop
 	public function change_shop($id) {

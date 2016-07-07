@@ -3,33 +3,6 @@ namespace Api\Controller;
 use Think\Controller;
 
 class ApiController extends Controller {
-
-	/*get_admin_info*/
-	public function get_admin_info($username="",$uid="") {
-		if(empty($username) && empty($uid))
-		return false;
-		if($uid)
-		$where ["id"] = $uid;
-		else
-		$where ["username"] = $username;
-		$result = M ( "Admin" )->where ( $where )->find ();
-		if ($result) {
-			$shop = $this->get_admin_shop($result['id']);
-			$result['shop'] = $shop;
-			return $result;
-		}
-	}
-
-	/*get admin shop belong to*/
-	public function get_admin_shop($uid) {
-		$where ["tag_id"] = $uid;
-		$where ["tag_cat"] = '用户';
-		$result = D ( "ShopIndex" )->where ( $where )->find ();
-		if ($result) {
-			return $result;
-		}
-	}
-
 	public function login($username, $password) {
 		$where ["username"] = $username;
 		$where ["password"] = md5 ( $password );
@@ -38,7 +11,6 @@ class ApiController extends Controller {
 			return $result ["username"];
 		}
 	}
-	
 	public function getsetting() {
 		$result = M ( "Info" )->find ();
 		if ($result) {
@@ -150,8 +122,6 @@ class ApiController extends Controller {
 			$result = M ( "Good" )->save($data);
 		}else{
 			$result = M ( "Good" )->add($data);
-			/*钩子*/
-			A("Shop")->set($result,'商品');
 		}
 		
 		if ($result) {

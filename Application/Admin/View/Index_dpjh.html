@@ -15,6 +15,8 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 				<ul class="nav nav-tabs" id="myTab">
 					<li class="active"><a data-toggle="tab" href="#home1">大牌钜惠</a></li>
 					<li><a data-toggle="tab" href="#home2">添加/修改</a></li>
+					<li><a data-toggle="tab" href="#home3">品牌活动</a></li>
+					<li><a data-toggle="tab" href="#home4">添加/修改</a></li>
 				</ul>
 			</div>
 		</div>
@@ -33,7 +35,6 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 												<th>ID</th>
 												<th>标识</th>
 												<th>排序</th>
-												<th>时间</th>
 												<th>操作</th>
 											</tr>
 										</thead>
@@ -44,7 +45,6 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 												<td>{$result.id}</td>
 												<td>{$result.name}</td>
 												<td>{$result.sort}</td>
-												<td>{$result.time}</td>
 												<td><a href="javascript:void(0);" onclick="reGood(this);" class="btn btn-white btn-sm">修改</a><a class="J_ajax_del btn btn-white btn-sm" href="{:U('Admin/Good/delgood',array('id'=>$result['id']))}">删除</a></td>
 											</tr>
 										</volist>
@@ -59,7 +59,9 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 					</div>
 					
 					<div id="home2" class="tab-pane in">
-						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="{:U('Admin/Good/addgood')}" method="post">
+						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="" method="post">
+						<input type="hidden" value="add" name="method" >
+						<input type="hidden" value="" name="id_1" >
 							<div class="tabbable">
 								<div class="tab-content">
 									<div class="tab-pane active">
@@ -67,20 +69,20 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 											<tbody>
 												<tr>
 													<td>标识:</td>
-													<td><input type="text" class="input col-sm-6" name="addname" value=""></td>
+													<td><input type="text" class="input col-sm-6" name="name" value=""></td>
 												</tr>
 												<tr>
 													<td>排序:</td>
-													<td><input type="text" class="input col-sm-2" name="addsort" value=""></td>
+													<td><input type="text" class="input col-sm-2" name="sort" value=""></td>
 												</tr>
 												<tr>
 													<td>首页图片:</td>
-													<td><input multiple="multiple" type="file" name="addimage">
+													<td><input multiple="multiple" type="file" name="img_face">
 													<p class="help-block">允许的附件文件类型: jpg,gif,png,jpeg并且图片大小小于200k.</p></td>
 												</tr>
 												<tr>
 													<td>搜索页图片:</td>
-													<td><input multiple="multiple" type="file" name="addimage">
+													<td><input multiple="multiple" type="file" name="img_search">
 													<p class="help-block">允许的附件文件类型: jpg,gif,png,jpeg并且图片大小小于200k.</p></td>
 												</tr>
 											</tbody>
@@ -102,26 +104,21 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 		<script type="text/javascript">
 			var flag = true;
 			function reGood(o) {
-				var goodid = $(o).parent().prev().prev().prev().prev().prev().html();
-				$.post("{:U('Admin/Good/getgoodid')}",{"id":goodid},function(data){
+				var goodid = $(o).parent().prev().prev().prev().html();
+				$.post("{:U('Admin/Index/dpjh')}",{"method":"getinfo","id":goodid},function(data){
 					var json = eval(data);
 					
-					$('select[name="addmenuid"]').val(json.menu_id);
-					$('input[name="addname"]').val(json.name);
-					$('input[name="addprice"]').val(json.price);
-					$('input[name="add_old_price"]').val(json.old_price);
-					$('input[name="addsort"]').val(json.sort);
-					$('select[name="addstatus"]').val(json.status);
-					$('#myEditor').html(json.detail);
-					// alert(json.detail);
+					$('input[name="id_1"]').val(json.id);
+					$('input[name="sort"]').val(json.sort);
+					$('input[name="name"]').val(json.name);
 					
 					if (flag) {
-						$('input[name="addname"]').parent().append('<input type="hidden" name="goodid" value="'+json.id+'">');
-						$('input[name="addimage"]').parent().append('<img src="__PUBLIC__'+json.savepath+json.image+'" id="goodimage" style="max-width:650px" class="img-thumbnail">');
+						$('input[name="img_face"]').parent().append('<img src="__PUBLIC__'+json.img_face+'" id="img_face" style="max-width:650px" class="img-thumbnail">');
+						$('input[name="img_search"]').parent().append('<img src="__PUBLIC__'+json.img_search+'" id="img_search" style="max-width:650px" class="img-thumbnail">');
 						flag = false;
 					}else{
-						$('input[name="goodid"]').val(json.id);
-						$('#goodimage').attr("src","__PUBLIC__"+json.savepath+json.image);
+						$('#img_face').attr("src","__PUBLIC__"+json.img_face);
+						$('#img_search').attr("src","__PUBLIC__"+json.img_search);
 					}
 				});
 				$('#myTab li').removeClass("active");

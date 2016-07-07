@@ -14,7 +14,7 @@ class CatModel extends BaseModel {
       /*U*/
       if(!empty($data['id'])){
         $this->create($data);
-        $this->save();
+        return $this->save();
       }else{
       /*C*/
         if( empty($tag_cat) )
@@ -39,6 +39,7 @@ class CatModel extends BaseModel {
           /*所属商铺*/
           D2("CatIndex")->hook2cat_set($id, 'cat', session('shop_id'));
         }
+        return $id;
       }
   }
 

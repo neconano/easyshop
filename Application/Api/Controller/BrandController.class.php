@@ -1,7 +1,41 @@
 <?php
 namespace Api\Controller;
+use Think\Image;
+use Think\Upload;
 
 class BrandController extends BaseController {
+
+
+	
+	public function add_dpjh($data,$id="") {
+		if( empty($data[name]) )
+			return false;
+		if( !empty($id) )
+			$data['id'] = $id;
+		$filename = ["img_face","img_search"];
+		foreach($filename as $v){
+			if ($_FILES [$v] ['name'] !== '') {
+				$img = $this->upload ();
+				$image = $img [$v] [savename];
+				$savepath = ltrim($img [$v] [savepath], ".");
+				$data[$v] = $savepath.$image;
+			}
+		}
+		$data['text'] = serialize($data);
+		return R ( "Api/Cat/setup" ,array($data, '大牌钜惠'));
+	}	
+
+	public function get_dpjh($id) {
+		$w['id'] = $id;
+		$result = D2("Cat")->where($w)->find ();
+		return $result;
+	}	
+
+	/*大牌钜惠*/
+	public function get_dpjh_list() {
+		$list = R ( "Api/Cat/n_get_level" ,array("大牌钜惠"));
+		return $list;
+	}	
 
 	public function get_promotion_list($brand_id) {
 		/*获得指定品牌cats*/

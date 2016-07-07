@@ -33,7 +33,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 											<tr>
 												<th>ID</th>
 												<th>名称</th>
-												<th>排序</th>
+												<th>置顶</th>
 												<th>操作</th>
 											</tr>
 										</thead>
@@ -43,7 +43,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 											<tr>
 												<td>{$result.id}</td>
 												<td>{$result.name}</td>
-												<td>{$result.sort}</td>
+												<td>{$result.top}</td>
 												<td><a href="javascript:void(0);" onclick="reGood(this);" class="btn btn-white btn-sm">修改</a></td>
 											</tr>
 										</volist>
@@ -57,7 +57,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 						</div>
 					</div>
 
-					<div id="home2">
+					<div id="home2" class="tab-pane in ">
 						<form class="form-horizontal J_ajaxForm" id="myform" action="" method="post">
 						<input type="hidden" value="add" name="method" >
 						<input type="hidden" value="" name="id" >
@@ -71,13 +71,13 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 													<td><input type="text" class="input col-sm-6" name="name" value=""></td>
 												</tr>
 												<tr>
-													<td>排序:</td>
-													<td><input type="text" class="input col-sm-6" name="sort" value=""></td>
+													<td>置顶:</td>
+													<td><input type="checkbox" name="top" value="1"></td>
 												</tr>
 												<tr>
 													<td>活动详情:</td>
 													<td><!--style给定宽度可以影响编辑器的最终宽度-->
-														<div type="text/plain" id="myEditor" style="width:660px;height:240px;">
+														<div type="text/plain" name="text" id="myEditor" style="width:660px;height:240px;">
 														</div>
 													</td>
 												</tr>
@@ -104,7 +104,8 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 					var json = eval(data);
 					$('input[name="id"]').val(json.id);
 					$('input[name="name"]').val(json.name);
-					$('input[name="sort"]').val(json.sort);
+					if(json.top)
+					$('input[name="top"]').attr("checked", true);  
 					$('#myEditor').html(json.text);
 				});
 				

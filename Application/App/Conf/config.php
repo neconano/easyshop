@@ -1,7 +1,6 @@
 <?php
 $config = R("Api/api/gettheme");
-//$theme = $config ["theme"];
-$theme = 'shop';
+$theme = $config ["theme"];
 
 return array(
     //'配置项'=>'配置值'

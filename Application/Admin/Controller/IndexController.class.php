@@ -56,7 +56,8 @@ class IndexController extends PublicController {
 		$this->_check_shop();
 		if(I("post.method") == 'add'){
 			if( !empty(I("post.name")) ){
-				$result = R ( "Api/Shop/add_dnhd", array (I("post.name"),I("post.id")));
+				$text = I("post.text",'','stripslashes');
+				$result = R ( "Api/Shop/add_dnhd", array (I("post.name"),$text,I("post.top"),I("post.id")));
 				if($result)
 					$this->success ( "成功");
 			}
@@ -69,7 +70,7 @@ class IndexController extends PublicController {
 			}
 			$this->error ( "错误");
 		}
-		$list = R ( "Api/Shop/get_dnhd" );
+		$list = R ( "Api/Shop/get_dnhd_list" );
 		$this->assign ( "page", $list[page] );
 		$this->assign ( "result", $list[result] );
 		$this->display ();
@@ -77,6 +78,29 @@ class IndexController extends PublicController {
 
 	/*大牌钜惠*/
 	public function dpjh() {
+		$this->_check_shop();
+		if(I("post.method") == 'add'){
+			if( !empty(I("post.name")) ){
+				$id = I("post.id_1");
+				$result = R ( "Api/Brand/add_dpjh", array (I("post."),$id));
+				if($result)
+					$this->success ( "成功");
+			}
+			$this->error ( "错误");
+		}
+		if(I("post.method") == 'getinfo'){
+			if( !empty(I("post.id")) ){
+				$result = R ( "Api/Brand/get_dpjh", array (I("post.id")));
+				$this->ajaxReturn ( $result );
+			}
+			$this->error ( "错误");
+		}
+
+
+
+		$list = R ( "Api/Brand/get_dpjh_list" );
+		$this->assign ( "page", $list[page] );
+		$this->assign ( "result", $list[result] );
 		$this->display ();
 	}
 

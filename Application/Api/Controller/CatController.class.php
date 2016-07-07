@@ -4,6 +4,23 @@ namespace Api\Controller;
 class CatController extends BaseController {
 
 
+
+	/*get cats*/
+	public function n_get_level($tag_cat,$level=0,$cat_id='',$need_arr='') {//cat_id所属cat
+		$w['cat_id'] = $this->shop_id;
+		$w['tag_cat'] = $tag_cat;
+		if( !empty($cat_id) )
+			$w['master_id'] = $cat_id;
+		$count = D2("ViewCatIndex")->where($w)->count (); // 查询满足要求的总记录数
+		$Page = new \Think\Page($count,12);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+		$Page->setConfig('theme', "<ul class='pagination no-margin pull-right'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+		$show = $Page->show (); // 分页显示输出
+		$list['page'] = $show;
+		$result = D2("Cat")->where($w)->limit ( $Page->firstRow . ',' . $Page->listRows )->select ();
+		$list['result'] = $result;
+		return $list;
+	}
+
 	public function get_top($tag_cat) {
 		$need_arr['top'] = 1;
 		return $this->get_level($tag_cat,0,'',$need_arr);

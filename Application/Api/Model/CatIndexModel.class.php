@@ -29,7 +29,29 @@ class CatIndexModel extends BaseModel {
 		}
 		$this->create($dat);
 		$id = $this->add();
+		/*回补cat_list*/
+		if($tag_cat == 'cat')
+			$this->update_cat_list($tag_id);
 	}
+
+
+	public function update_cat_list($tag_id){
+		$w['tag_id'] = $tag_id;
+		$w['tag_cat'] = 'cat';
+		$list = $this->where($w)->select();
+		foreach($list as $v){
+			if( empty($cat_list))
+			$cat_list = $v['cat_id'];
+			else {
+				$cat_list .= ','.$v['cat_id'];
+			}
+		}
+		$w2['id'] = $tag_id;
+		$d['master_list'] = $cat_list;
+		D2("Cat")->where($w2)->save($d);
+	}
+
+
 
 	public function hook2cat_get($result ,$tag_cat , $cat_id ){
 		$w['tag_cat'] = $tag_cat;

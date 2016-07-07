@@ -1,209 +1,16 @@
 <?php
 namespace App\Controller;
+use Think\Controller;
 
-class IndexController extends BaseController {
-
-	function _init() {
-		if( !empty(I("get.shop_id")) || !empty(I("post.shop_id")) )
-		$this->change_shop(1);
+// 本类由系统自动生成，仅供测试用途
+class IndexController extends Controller {
+	function _initialize() {
+		// $_GET = I("get.");
+		// $_POST = I("post.");
 	}
 
-	/*home page*/
-	public function Index() {
-		if(I("get.banner")){
-			$list = R ( "Api/Banner/get_list" );
-			$this->assign ( "list", $list );
-			$page = $this->fetch("Home:banner");
-			echo $page;
-			exit;
-		}
-		if(I("get.seckill")){
-			$list = R ( "Api/Cat/get_level" ,array("限时购"));
-			$this->assign ( "list", $list );
-			$page = $this->fetch("Home:banner");
-			echo $page;
-			exit;
-		}
-		if(I("get.star_goods")){
-			$list = R ( "Api/Cat/get_level" ,array("明星单品"));
-			$this->assign ( "list", $list );
-			$page = $this->fetch("Home:banner");
-			echo $page;
-			exit;
-		}
-		if(I("get.dpjh")){
-			$list = R ( "Api/Cat/get_level" ,array("大牌钜惠"));
-			dump($list);
-			exit;
-		}
-		$this->display ();
-	}
-
-	/*HuanXinDaPei Promotion*/
-	public function Hxdp() {
-		if(I("get.index")){
-			$list = R ( "Api/Cat/get_level" ,array("焕新搭配"));
-			dump($list);
-			exit;
-		}
-		if(I("get.list")){
-			$cat_id = I("get.cat_id");
-			$cat_id = 14;
-			$list = R ( "Api/Cat/get_level" ,array("焕新搭配",1,$cat_id));
-			dump($list);
-			exit;
-		}
-		if(I("get.page")){
-			$cat_id = I("get.cat_id");
-			$cat_id = 14;
-			$list = R ( "Api/Cat/get_cat" ,array($cat_id));
-			dump($list);
-			exit;
-		}
-		$this->display ();
-	}
-
-	/*Shop Promotion*/
-	public function Shop() {
-		if(I("get.info")){
-			$list = R ( "Api/Shop/get_shop_cat" ,array('店内活动'));
-			dump($list);
-			dump( unserialize($list[0]['text']) );
-			exit;
-		}
-		$this->display ();
-	}
-
-	/*Brand Promotion*/
-	public function Brand() {
-		if(I("get.list")){
-			$cat_id = I("get.brand_id");
-			$cat_id = 25;
-			$list = R ( "Api/Brand/get_promotion_list" ,array($cat_id));
-			dump($list);
-			exit;
-		}
-		$this->display ();
-	}
-
-	/*Seckill*/
-	public function Seckill() {
-		if(I("get.list")){
-			$cat_id = I("get.cat_id");
-			$cat_id = 37;
-			$list = R ( "Api/Cat/get_level" ,array("限时购",1,$cat_id));
-			dump($list);
-			exit;
-		}
-		if(I("get.page")){
-			$cat_id = I("get.cat_id");
-			$cat_id = 37;
-			$list = R ( "Api/Cat/get_cat" ,array($cat_id));
-			dump($list);
-			exit;
-		}
-		$this->display ();
-	}
-
-	/*Coupon*/
-	public function Coupon() {
-		if(I("get.checktel")){
-			if( empty(session('tel')) ){
-				return false;
-			}
-			return true;
-		}
-		if(I("get.settel")){
-			session('tel',I("get.tel"));
-			return true;
-		}
-		/*get my all coupons*/
-		if(I("get.list")){
-			if( empty(session('tel')) ){
-				/*ask for tel*/
-			}else{
-				$list = R ( "Api/Coupon/get_my_list" );
-				dump($list);
-			}
-			exit;
-		}
-		if(I("get.page")){
-			$coupon_id = I("get.coupon_id");
-			$dat = R ( "Api/Coupon/get_detail",array($coupon_id));
-			dump($dat);
-			exit;
-		}
-		if(I("get.getnew")){
-			if( empty(session('tel')) ){
-				/*ask for tel*/
-			}else{
-				$cat_id = I("get.cat_id");
-				$dat = R ( "Api/Coupon/get_new",array($cat_id) );
-				dump($list);
-			}
-			exit;
-		}
-		/*ask for use coupon*/
-		if(I("get.use")){
-			$coupon_id = I("get.coupon_id");
-			$dat = R ( "Api/Coupon/push_coupon",array($cat_id) );
-			dump($list);
-			exit;
-		}
-		if(I("get.poll")){
-			$dat = R ( "Api/Coupon/poll_coupon" );
-			dump($list);
-			exit;
-		}
-		if(I("get.give")){
-			$coupon_id = I("get.coupon_id");
-			$coupon_code = I("get.coupon_code");
-			$dat = R ( "Api/Coupon/give_coupon",array($coupon_id,$coupon_code) );
-			dump($list);
-			exit;
-		}
-		$this->display ();
-	}
-
-	/*Goods*/
-	public function Goods() {
-		if(I("get.id")){
-			$where ["id"] = I("get.id");
-			$result = M ( "Good" )->where ( $where )->find ();
-			if ($result) {
-				$this->ajaxReturn ( $result );
-			}
-			exit;
-		}
-		//$this->display ();
-	}
-
-	/*Search*/
-	public function Search() {
-		if(I("get.brand")){
-			$w ["name"] = array("like","%".I("get.brand")."%");
-			$w ["tag_cat"] = '品牌';
-			$cat = D2("Cat")->where($w)->find();
-			if( !empty($cat)){
-				$cat_id = I("get.cat_id");
-				$list = R ( "Api/Cat/get_cat" ,array($cat_id));
-				dump($list);
-				exit;
-			}
-		}
-	}
-
-
-
-
-
-
-
-
-
-	
-	public function index_old() {
-		// if (I("get.uid")) {
+	public function index() {
+		if (I("get.uid")) {
 			$info = R ( "Api/Api/gettheme" );
 			C ( "DEFAULT_THEME", $info ["theme"] );
 			$this->assign ( "info", $info );
@@ -224,9 +31,9 @@ class IndexController extends BaseController {
 			
 			$this->assign ( "users", $usersresult );
 			$this->display ();
-		// } else {
-		// 	echo '请使用微信访问!';
-		// }
+		} else {
+			echo '请使用微信访问!';
+		}
 	}
 	public function fetchgooddetail() {
 		$where ["id"] = I("post.id");

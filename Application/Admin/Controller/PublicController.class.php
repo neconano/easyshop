@@ -29,4 +29,17 @@ class PublicController extends Controller {
 		}
 		return $info;
 	}
+
+
+	public function success($str) {
+		parent::success ($str);
+		exit;
+	}
+
+	public function error($str) {
+		parent::error ($str);
+		exit;
+	}
+
+
 }
