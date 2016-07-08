@@ -1,4 +1,9 @@
 <include file="Public:header"/>
+<style>
+	.sm-fix{
+		color: red;
+	}
+</style>
 <script type="text/javascript">
 var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 </script>
@@ -13,9 +18,9 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 		<div class="widget-header">
 			<div class="widget-toolbar no-border">
 				<ul class="nav nav-tabs" id="myTab">
-					<li class="active"><a data-toggle="tab" href="#home1">大牌钜惠</a></li>
+					<li <php>if( empty($master) ){</php> class="active" <php>}</php>><a data-toggle="tab" href="#home1">大牌钜惠</a></li>
 					<li><a data-toggle="tab" href="#home2">添加/修改</a></li>
-					<li><a data-toggle="tab" href="#home3">品牌活动</a></li>
+					<li <php>if( !empty($master) ){</php> class="active" <php>}</php>><a data-toggle="tab" href="#home3">品牌活动</a></li>
 					<li><a data-toggle="tab" href="#home4">添加/修改</a></li>
 				</ul>
 			</div>
@@ -24,7 +29,9 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 		<div class="widget-body">
 			<div class="widget-main padding-12 no-padding-left no-padding-right">
 				<div class="tab-content padding-4">
-					<div id="home1" class="tab-pane in active">
+
+					<div id="home1" class="tab-pane in <php>if( empty($master) ){</php> active <php>}</php>">
+						<div class="well well-sm sm-fix"> 隐藏标识，1代表隐藏，0代表显示 </div>
 						<div class="row">
 							<div class="col-xs-12 no-padding-right">
 								<div class="table-responsive">
@@ -32,6 +39,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 										class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
+												<th>隐藏</th>
 												<th>ID</th>
 												<th>标识</th>
 												<th>排序</th>
@@ -42,10 +50,15 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 										<tbody>
 										<volist name="result" id="result">
 											<tr>
+												<td>{$result.not_show}</td>
 												<td>{$result.id}</td>
 												<td>{$result.name}</td>
 												<td>{$result.sort}</td>
-												<td><a href="javascript:void(0);" onclick="reGood(this);" class="btn btn-white btn-sm">修改</a><a class="J_ajax_del btn btn-white btn-sm" href="{:U('Admin/Good/delgood',array('id'=>$result['id']))}">删除</a></td>
+												<td>
+												<a href="javascript:void(0);" onclick="reGood(this);" class="btn btn-white btn-sm">修改</a>
+												<a href="javascript:void(0);" onclick="reGood_s(this);" class="btn btn-white btn-sm">查看品牌活动</a>
+												<a class="J_ajax_del btn btn-white btn-sm" href="javascript:void(0);" onclick="not_show(this);">显示/隐藏</a>
+												</td>
 											</tr>
 										</volist>
 										</tbody>
@@ -97,6 +110,89 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 							</div>
 						</form>
 					</div>
+
+					
+					<div id="home3" class="tab-pane in <php>if( !empty($master) ){</php> active <php>}</php>">
+						<div class="row">
+							<div class="col-xs-12 no-padding-right">
+								<div class="table-responsive">
+									<table id="sample-table-1"
+										class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>标识</th>
+												<th>所属id</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+
+										<tbody>
+										<volist name="result_2" id="result">
+											<tr>
+												<td>{$result.id}</td>
+												<td>{$result.name}</td>
+												<td>{$result.master_id}</td>
+												<td>
+													<a href="javascript:void(0);" onclick="reGood2(this);" class="btn btn-white btn-sm">修改</a>
+													<a class="J_ajax_del btn btn-white btn-sm" href="javascript:void(0);" onclick="not_show(this);">显示/隐藏</a>
+												</td>
+											</tr>
+										</volist>
+										</tbody>
+									</table>
+									<div class="pagination" style="margin:0px;">
+									    {$page_2}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div id="home4" class="tab-pane in">
+						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="" method="post">
+						<input type="hidden" value="add_2" name="method" >
+						<input type="hidden" value="" name="id_2" >
+							<div class="tabbable">
+								<div class="tab-content">
+									<div class="tab-pane active">
+										<table cellpadding="2" cellspacing="2" width="100%">
+											<tbody>
+												<tr>
+													<td>标识:</td>
+													<td><input type="text" class="input col-sm-6" name="name_2" value=""></td>
+												</tr>
+												<tr>
+													<td>排序:</td>
+													<td><input type="text" class="input col-sm-2" name="sort_2" value=""></td>
+												</tr>
+												<tr>
+													<td>所属:</td>
+													<td><select class="select_2" name="master_id">
+															<volist name="list_option" id="addmenu">
+															<option value="{$addmenu.id}">{$addmenu.name}</option>
+															</volist>
+													</select></td>
+												</tr>
+												<tr>
+													<td>图片:</td>
+													<td><input multiple="multiple" type="file" name="img_face_2">
+													<p class="help-block">允许的附件文件类型: jpg,gif,png,jpeg并且图片大小小于200k.</p></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="form-actions">
+								<button class="btn btn-primary btn_submit J_ajax_submit_btn"
+									type="submit">提交</button>
+								<a class="btn" href="">返回</a>
+							</div>
+						</form>
+					</div>
+
+					
 				</div>
 			</div>
 		</div>
@@ -107,11 +203,9 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 				var goodid = $(o).parent().prev().prev().prev().html();
 				$.post("{:U('Admin/Index/dpjh')}",{"method":"getinfo","id":goodid},function(data){
 					var json = eval(data);
-					
 					$('input[name="id_1"]').val(json.id);
 					$('input[name="sort"]').val(json.sort);
 					$('input[name="name"]').val(json.name);
-					
 					if (flag) {
 						$('input[name="img_face"]').parent().append('<img src="__PUBLIC__'+json.img_face+'" id="img_face" style="max-width:650px" class="img-thumbnail">');
 						$('input[name="img_search"]').parent().append('<img src="__PUBLIC__'+json.img_search+'" id="img_search" style="max-width:650px" class="img-thumbnail">');
@@ -123,6 +217,38 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 				$('#home1').removeClass("active");
 				$('#home2').addClass("active");
 			}
+
+			function reGood_s(o) {
+				var goodid = $(o).parent().prev().prev().prev().html();
+				location.href = "{:U('Admin/Index/dpjh')}"+"&master="+goodid;
+			}
+
+			var flag2 = true;
+			function reGood2(o) {
+				var goodid = $(o).parent().prev().prev().prev().html();
+				$.post("{:U('Admin/Index/dpjh')}",{"method":"getinfo","id":goodid},function(data){
+					var json = eval(data);
+					$('input[name="id_2"]').val(json.id);
+					$('input[name="sort_2"]').val(json.sort);
+					$('input[name="name_2"]').val(json.name);
+					$('select[name="master_id"]').val(json.master_id);
+
+					if (flag2) {
+						$('input[name="img_face_2"]').parent().append('<img src="__PUBLIC__'+json.img_face+'" id="img_face" style="max-width:650px" class="img-thumbnail">');
+						flag2 = false;
+					}
+				});
+				$('#myTab li').removeClass("active");
+				$('#myTab li').eq(3).addClass("active");
+				$('#home3').removeClass("active");
+				$('#home4').addClass("active");
+			}
+			
+			function not_show(o) {
+				var goodid = $(o).parent().prev().prev().prev().html();
+				location.href = "{:U('Admin/Index/notShow')}"+"&cat_id="+goodid;
+			}
+
 		</script>
 	</div>
 </div>

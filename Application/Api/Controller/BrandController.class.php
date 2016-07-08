@@ -6,38 +6,38 @@ use Think\Upload;
 class BrandController extends BaseController {
 
 
-	
-	public function add_dpjh($data,$id="") {
+	public function add_dpjh($data,$id="",$mask="") {
+		$data = replace_input($data,$mask);
 		if( empty($data[name]) )
 			return false;
 		if( !empty($id) )
 			$data['id'] = $id;
-		$filename = ["img_face","img_search"];
-		foreach($filename as $v){
-			if ($_FILES [$v] ['name'] !== '') {
-				$img = $this->upload ($_FILES [$v]);
-				$image = $img [$v] [savename];
-				$savepath = ltrim($img [$v] [savepath], ".");
-				$data[$v] = $savepath.$image;
+		else
+			$data['id'] = null;
+		$imgs = $this->upload ();
+		if( !empty($imgs) ){
+			if($id)
+			$info = $this->get_dpjh($id);
+			foreach($imgs as $k=>$v){
+				if($info[$k])
+				unlink('./Public/'.$info[$k]);
+				$data[$k] = ltrim($v['savepath'], ".").$v['savename'];
 			}
 		}
-
-		dump($data);
-		dump($_FILES);
-exit;
-		$data['text'] = serialize($data);
+		$data = replace_input($data,$mask);
 		return R ( "Api/Cat/setup" ,array($data, '大牌钜惠'));
 	}	
 
 	public function get_dpjh($id) {
 		$w['id'] = $id;
 		$result = D2("Cat")->where($w)->find ();
+		$result = unserialize($result[text]);
 		return $result;
 	}	
 
 	/*大牌钜惠*/
-	public function get_dpjh_list() {
-		$list = R ( "Api/Cat/n_get_level" ,array("大牌钜惠"));
+	public function get_dpjh_list($level=0,$master_id=0) {
+		$list = R ( "Api/Cat/n_get_level" ,array("大牌钜惠",$level,$master_id));
 		return $list;
 	}	
 

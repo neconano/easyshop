@@ -9,6 +9,7 @@ class CatController extends BaseController {
 	public function n_get_level($tag_cat,$level=0,$cat_id='',$need_arr='') {//cat_id所属cat
 		$w['cat_id'] = $this->shop_id;
 		$w['tag_cat'] = $tag_cat;
+		$w['tag_cat_level'] = $level;
 		if( !empty($cat_id) )
 			$w['master_id'] = $cat_id;
 		$count = D2("ViewCatIndex")->where($w)->count (); // 查询满足要求的总记录数
@@ -20,6 +21,16 @@ class CatController extends BaseController {
 		$list['result'] = $result;
 		return $list;
 	}
+
+	
+	public function n_get_cats($tag_cat_name) {
+		$w['cat_id'] = $this->shop_id;
+		$w['tag_cat'] = $tag_cat_name;
+		$cats = D2("Cat")->where($w)->select();
+		return $cats;
+	}
+
+	
 
 	public function get_top($tag_cat) {
 		$need_arr['top'] = 1;
@@ -121,7 +132,7 @@ class CatController extends BaseController {
 		$data['img'] = '6633';
 		$data['name'] = '6633';
 		//$data['text'] = serialize('%……！@#￥%！@##￥%sdfsf<body class="" id="grid">');
-		$data['p_id'] = '37';
+		$data['master_id'] = '37';
 		$this->setup($data,'限时购');
 	}
 	public function setup($data,$tag_cat,$delete=0) {
@@ -141,8 +152,12 @@ class CatController extends BaseController {
 		D2("CatIndex")->hook2cat_remove($cat_id);
 	}
 
-
-
+	public function notShow($id) {
+		$w['id'] = $id;
+		$cat = D2("Cat")->where($w)->find();
+		$cat['not_show'] = $cat['not_show']?0:1;
+		D2("Cat")->where($w)->save($cat);
+	}
 
 
 

@@ -68,6 +68,13 @@ function D2($name='',$layer='') {
 	return D('Api/'.$name, $layer) ;
 }
 
+function replace_input($array,$mask) {
+	foreach($array as $k=>$v){
+		$k = str_replace($mask,"",$k);
+		$data[$k] = $v;
+	}
+	return $data;
+}
 
 
 

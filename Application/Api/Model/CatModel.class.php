@@ -13,6 +13,13 @@ class CatModel extends BaseModel {
   public function setup($data,$tag_cat){
       /*U*/
       if(!empty($data['id'])){
+        $w['id'] = $data['id'];
+        $d = $this->where($w)->find();
+        if( empty($d) )
+	        E('必要数据不存在:4442');
+        $d = unserialize($d['text']);
+        $d = pull_array($d,$data);
+        $data['text'] = serialize($d);
         $this->create($data);
         return $this->save();
       }else{
@@ -21,8 +28,8 @@ class CatModel extends BaseModel {
 	        E('必要数据不存在:4442');
         if( $tag_cat != '商铺' && empty(session('shop_id')) )
           E('必要数据不存在:221');
-        if( !empty($data['p_id'])){
-          $w['id'] = $data['p_id'];
+        if( !empty($data['master_id'])){
+          $w['id'] = $data['master_id'];
           $w['tag_cat'] = $tag_cat;
           $d = $this->where($w)->find();
           if( !empty($d) )
@@ -31,9 +38,13 @@ class CatModel extends BaseModel {
         $data['tag_cat'] = $tag_cat;
         $this->create($data);
         $id = $this->add();
-        if( !empty($data['p_id'])){
+        $data[id] = $id;
+        $data['text'] = serialize($data);
+        $this->create($data);
+        $this->save();
+        if( !empty($data['master_id'])){
           /*所属cat*/
-          D2("CatIndex")->hook2cat_set($id, 'cat', $data['p_id']);
+          D2("CatIndex")->hook2cat_set($id, 'cat', $data['master_id']);
         }
         if( $data['tag_cat'] != '商铺' ){
           /*所属商铺*/

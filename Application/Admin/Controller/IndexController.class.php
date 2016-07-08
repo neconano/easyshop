@@ -96,11 +96,28 @@ class IndexController extends PublicController {
 			$this->error ( "错误");
 		}
 
-
+		if(I("post.method") == 'add_2'){
+			if( !empty(I("post.name_2")) ){
+				$id = I("post.id_2");
+				$result = R ( "Api/Brand/add_dpjh", array (I("post."),$id,"_2"));
+				if($result)
+					$this->success ( "成功");
+			}
+			$this->error ( "错误");
+		}
 
 		$list = R ( "Api/Brand/get_dpjh_list" );
 		$this->assign ( "page", $list[page] );
 		$this->assign ( "result", $list[result] );
+
+		$list = R ( "Api/Brand/get_dpjh_list", array (1,I("get.master")) );		
+		$this->assign ( "page_2", $list[page] );
+		$this->assign ( "result_2", $list[result] );
+		
+		$list_option = R ( "Api/Cat/n_get_cats", array ('大牌钜惠') );
+		$this->assign ( "list_option", $list_option );
+		$this->assign ( "master", I("get.master") );
+
 		$this->display ();
 	}
 
@@ -124,6 +141,15 @@ class IndexController extends PublicController {
 		$this->display ();
 	}
 
+	/*优惠券*/
+	public function notShow() {
+		$id = I("get.cat_id");
+		if( !empty($id) ){
+			R ( "Api/Cat/notShow", array ($id) );
+			$this->success ( "成功");
+		}
+		$this->error ( "错误");
+	}
 
 	
 
@@ -166,3 +192,8 @@ class IndexController extends PublicController {
 	}
 
 }
+
+
+
+
+
