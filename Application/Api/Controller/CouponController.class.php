@@ -4,6 +4,22 @@ namespace Api\Controller;
 class CouponController extends BaseController {
 
 
+	public function add($data) {
+		return R ( "Api/Cat/add_cat" ,array('优惠券',$data));
+	}	
+
+	public function get_list($level=0,$master_id=0) {
+		$list = R ( "Api/Cat/n_get_level" ,array("优惠券",$level,$master_id));
+		return $list;
+	}	
+
+	public function get($id) {
+		$w['id'] = $id;
+		$result = D2("Cat")->where($w)->find ();
+		$result = unserialize($result[text]);
+		return $result;
+	}	
+
 	public function setup_demo() {
 		$tag_id = 57;
 		$cat_id = 16;

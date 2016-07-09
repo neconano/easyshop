@@ -30,6 +30,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 										class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
+												<th>隐藏</th>
 												<th>ID</th>
 												<th>标识</th>
 												<th>商品价格</th>
@@ -41,11 +42,15 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 										<tbody>
 										<volist name="result" id="result">
 											<tr>
+												<td>{$result.not_show}</td>
 												<td>{$result.id}</td>
 												<td>{$result.name}</td>
 												<td>{$result.price}</td>
-												<td>{$result.time}</td>
-												<td><a href="javascript:void(0);" onclick="reGood(this);" class="btn btn-white btn-sm">修改</a><a class="J_ajax_del btn btn-white btn-sm" href="{:U('Admin/Good/delgood',array('id'=>$result['id']))}">删除</a></td>
+												<td>{$result.sort}</td>
+												<td>
+												<a href="javascript:void(0);" onclick="reGood(this);" class="btn btn-white btn-sm">修改</a>
+												<a class="J_ajax_del btn btn-white btn-sm" href="javascript:void(0);" onclick="not_show(this);">显示/隐藏</a>
+												</td>
 											</tr>
 										</volist>
 										</tbody>
@@ -59,7 +64,9 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 					</div>
 					
 					<div id="home2" class="tab-pane in">
-						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="{:U('Admin/Good/addgood')}" method="post">
+						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="" method="post">
+							<input type="hidden" value="add" name="method" >
+							<input type="hidden" value="" name="id" >
 							<div class="tabbable">
 								<div class="tab-content">
 									<div class="tab-pane active">
@@ -67,27 +74,23 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 											<tbody>
 												<tr>
 													<td>标识:</td>
-													<td><input type="text" class="input col-sm-6" name="addname" value=""></td>
+													<td><input type="text" class="input col-sm-6" name="name" value=""></td>
 												</tr>
 												<tr>
-													<td>关联商品:</td>
-													<td><input type="text" class="input col-sm-2" name="addprice" value=""></td>
+													<td>商品id:</td>
+													<td><input type="text" class="input col-sm-2" name="goods_id" value=""></td>
 												</tr>
 												<tr>
 													<td>排序:</td>
-													<td><input type="text" class="input col-sm-2" name="addprice" value=""></td>
+													<td><input type="text" class="input col-sm-2" name="sort" value=""></td>
 												</tr>
 												<tr>
 													<td>商品价格:</td>
-													<td><input type="text" class="input col-sm-2" name="addprice" value=""></td>
+													<td><input type="text" class="input col-sm-2" name="price" value=""></td>
 												</tr>
 												<tr>
 													<td>商品原价:</td>
-													<td><input type="text" class="input col-sm-2" name="add_old_price" value=""></td>
-												</tr>
-												<tr>
-													<td>商品排序:</td>
-													<td><input type="text" class="input col-sm-2" name="addsort" value=""></td>
+													<td><input type="text" class="input col-sm-2" name="old_price" value=""></td>
 												</tr>
 											</tbody>
 										</table>
@@ -106,30 +109,18 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 		</div>
 		
 		<script type="text/javascript">
-			var flag = true;
 			function reGood(o) {
-				var goodid = $(o).parent().prev().prev().prev().prev().prev().html();
-				$.post("{:U('Admin/Good/getgoodid')}",{"id":goodid},function(data){
+				var goodid = $(o).parent().prev().prev().prev().prev().html();
+				$.post("{:U('Admin/Index/mxdp')}",{"method":"getinfo","id":goodid},function(data){
 					var json = eval(data);
-					
-					$('select[name="addmenuid"]').val(json.menu_id);
-					$('input[name="addname"]').val(json.name);
-					$('input[name="addprice"]').val(json.price);
-					$('input[name="add_old_price"]').val(json.old_price);
-					$('input[name="addsort"]').val(json.sort);
-					$('select[name="addstatus"]').val(json.status);
-					$('#myEditor').html(json.detail);
-					// alert(json.detail);
-					
-					if (flag) {
-						$('input[name="addname"]').parent().append('<input type="hidden" name="goodid" value="'+json.id+'">');
-						$('input[name="addimage"]').parent().append('<img src="__PUBLIC__'+json.savepath+json.image+'" id="goodimage" style="max-width:650px" class="img-thumbnail">');
-						flag = false;
-					}else{
-						$('input[name="goodid"]').val(json.id);
-						$('#goodimage').attr("src","__PUBLIC__"+json.savepath+json.image);
-					}
+					$('input[name="id"]').val(json.id);
+					$('input[name="name"]').val(json.name);
+					$('input[name="goods_id"]').val(json.goods_id);
+					$('input[name="price"]').val(json.price);
+					$('input[name="old_price"]').val(json.old_price);
+					$('input[name="sort"]').val(json.sort);
 				});
+				
 				$('#myTab li').removeClass("active");
 				$('#myTab li').eq(1).addClass("active");
 				$('#home1').removeClass("active");

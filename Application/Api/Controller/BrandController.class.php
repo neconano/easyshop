@@ -5,27 +5,8 @@ use Think\Upload;
 
 class BrandController extends BaseController {
 
-
-	public function add_dpjh($data,$id="",$mask="") {
-		$data = replace_input($data,$mask);
-		if( empty($data[name]) )
-			return false;
-		if( !empty($id) )
-			$data['id'] = $id;
-		else
-			$data['id'] = null;
-		$imgs = $this->upload ();
-		if( !empty($imgs) ){
-			if($id)
-			$info = $this->get_dpjh($id);
-			foreach($imgs as $k=>$v){
-				if($info[$k])
-				unlink('./Public/'.$info[$k]);
-				$data[$k] = ltrim($v['savepath'], ".").$v['savename'];
-			}
-		}
-		$data = replace_input($data,$mask);
-		return R ( "Api/Cat/setup" ,array($data, '大牌钜惠'));
+	public function add_dpjh($data) {
+		return R ( "Api/Cat/add_cat" ,array('大牌钜惠',$data));
 	}	
 
 	public function get_dpjh($id) {

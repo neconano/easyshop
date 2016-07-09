@@ -5,14 +5,14 @@ class ShopController extends BaseController {
 	
 
 	// add 店内活动
-	public function add_dnhd($name,$text,$top,$id="") {
+	public function add_dnhd($name,$content,$top,$id="") {
 		if( empty($name) )
 			return false;
 		if( !empty($id) )
 		$data['id'] = $id;
 		$data['name'] = $name;
 		$data['top'] = $top;
-		$data['text'] = $text;
+		$data['content'] = $content;
 		return R ( "Api/Cat/setup" ,array($data, '店内活动'));
 	}
 	

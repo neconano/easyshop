@@ -74,6 +74,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 					<div id="home2" class="tab-pane in">
 						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="" method="post">
 						<input type="hidden" value="add" name="method" >
+						<input type="hidden" value="_1" name="mask" >
 						<input type="hidden" value="" name="id_1" >
 							<div class="tabbable">
 								<div class="tab-content">
@@ -113,6 +114,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 
 					
 					<div id="home3" class="tab-pane in <php>if( !empty($master) ){</php> active <php>}</php>">
+						<div class="well well-sm sm-fix"> 隐藏标识，1代表隐藏，0代表显示 </div>
 						<div class="row">
 							<div class="col-xs-12 no-padding-right">
 								<div class="table-responsive">
@@ -120,6 +122,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 										class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
+												<th>隐藏</th>
 												<th>ID</th>
 												<th>标识</th>
 												<th>所属id</th>
@@ -130,6 +133,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 										<tbody>
 										<volist name="result_2" id="result">
 											<tr>
+												<td>{$result.not_show}</td>
 												<td>{$result.id}</td>
 												<td>{$result.name}</td>
 												<td>{$result.master_id}</td>
@@ -151,7 +155,8 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 					
 					<div id="home4" class="tab-pane in">
 						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="" method="post">
-						<input type="hidden" value="add_2" name="method" >
+						<input type="hidden" value="add" name="method" >
+						<input type="hidden" value="_2" name="mask" >
 						<input type="hidden" value="" name="id_2" >
 							<div class="tabbable">
 								<div class="tab-content">
@@ -228,13 +233,17 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 				var goodid = $(o).parent().prev().prev().prev().html();
 				$.post("{:U('Admin/Index/dpjh')}",{"method":"getinfo","id":goodid},function(data){
 					var json = eval(data);
+					if(json.id == undefined){
+						alert("数据错误");
+						location.href = "{:U('Admin/Index/dpjh')}";
+					}
 					$('input[name="id_2"]').val(json.id);
 					$('input[name="sort_2"]').val(json.sort);
 					$('input[name="name_2"]').val(json.name);
 					$('select[name="master_id"]').val(json.master_id);
 
 					if (flag2) {
-						$('input[name="img_face_2"]').parent().append('<img src="__PUBLIC__'+json.img_face+'" id="img_face" style="max-width:650px" class="img-thumbnail">');
+						$('input[name="img_face_2"]').parent().append('<img src="__PUBLIC__'+json.img_face+'" id="img_face_2" style="max-width:650px" class="img-thumbnail">');
 						flag2 = false;
 					}
 				});

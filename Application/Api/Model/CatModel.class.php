@@ -24,6 +24,10 @@ class CatModel extends BaseModel {
         return $this->save();
       }else{
       /*C*/
+        foreach($data as $k=>$v){
+          if( empty($v))
+          unset($data[$k]);
+        }
         if( empty($tag_cat) )
 	        E('必要数据不存在:4442');
         if( $tag_cat != '商铺' && empty(session('shop_id')) )

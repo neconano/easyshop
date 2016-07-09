@@ -4,6 +4,32 @@ namespace Api\Controller;
 class CatController extends BaseController {
 
 
+	public function add_cat($tag_cat,$data) {
+		$mask = $data["mask"];
+		$data = replace_input($data,$mask);
+		if( empty($data[name]) )
+			return false;
+		$imgs = $this->upload ();
+		if( !empty($imgs) ){
+			if($id)
+			$info = $this->get($id);
+			foreach($imgs as $k=>$v){
+				if($info[$k])
+				unlink('./Public/'.$info[$k]);
+				$data[$k] = ltrim($v['savepath'], ".").$v['savename'];
+			}
+		}
+		$data = replace_input($data,$mask);
+		return R ( "Api/Cat/setup" ,array($data, $tag_cat));
+	}	
+
+	public function get($id) {
+		$w['id'] = $id;
+		$result = D2("Cat")->where($w)->find ();
+		$result = unserialize($result[text]);
+		return $result;
+	}	
+
 
 	/*get cats*/
 	public function n_get_level($tag_cat,$level=0,$cat_id='',$need_arr='') {//cat_id所属cat
@@ -17,15 +43,21 @@ class CatController extends BaseController {
 		$Page->setConfig('theme', "<ul class='pagination no-margin pull-right'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
 		$show = $Page->show (); // 分页显示输出
 		$list['page'] = $show;
-		$result = D2("Cat")->where($w)->limit ( $Page->firstRow . ',' . $Page->listRows )->select ();
+		$result = D2("Cat")->where($w)->limit ( $Page->firstRow . ',' . $Page->listRows )->order("id desc")->select ();
+		$i=0;
+		foreach($result as $v){
+			$result[$i] = unserialize($v['text']);
+			$i++;
+		}
 		$list['result'] = $result;
 		return $list;
 	}
 
 	
-	public function n_get_cats($tag_cat_name) {
+	public function n_get_cats($tag_cat_name,$level=0) {
 		$w['cat_id'] = $this->shop_id;
 		$w['tag_cat'] = $tag_cat_name;
+		$w['tag_cat_level'] = $level;
 		$cats = D2("Cat")->where($w)->select();
 		return $cats;
 	}

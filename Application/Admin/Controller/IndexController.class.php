@@ -56,23 +56,17 @@ class IndexController extends PublicController {
 		$this->_check_shop();
 		if(I("post.method") == 'add'){
 			if( !empty(I("post.name")) ){
-				$text = I("post.text",'','stripslashes');
-				$result = R ( "Api/Shop/add_dnhd", array (I("post.name"),$text,I("post.top"),I("post.id")));
+				$content = I("post.content",'','stripslashes');
+				$result = R ( "Api/Shop/add_dnhd", array (I("post.name"),$content,I("post.top"),I("post.id")));
 				if($result)
 					$this->success ( "成功");
 			}
 			$this->error ( "错误");
 		}
 		if(I("post.method") == 'getinfo'){
-			if( !empty(I("post.id")) ){
-				$result = R ( "Api/Shop/get_dnhd", array (I("post.id")));
-				$this->ajaxReturn ( $result );
-			}
-			$this->error ( "错误");
+			$this->_short_block('getinfo',"Api/Shop/get_dnhd");
 		}
-		$list = R ( "Api/Shop/get_dnhd_list" );
-		$this->assign ( "page", $list[page] );
-		$this->assign ( "result", $list[result] );
+		$this->_short_block('default',"Api/Shop/get_dnhd_list");
 		$this->display ();
 	}
 
@@ -80,68 +74,73 @@ class IndexController extends PublicController {
 	public function dpjh() {
 		$this->_check_shop();
 		if(I("post.method") == 'add'){
-			if( !empty(I("post.name")) ){
-				$id = I("post.id_1");
-				$result = R ( "Api/Brand/add_dpjh", array (I("post."),$id));
-				if($result)
-					$this->success ( "成功");
-			}
-			$this->error ( "错误");
+			$this->_short_block('add',"Api/Brand/add_dpjh");
 		}
 		if(I("post.method") == 'getinfo'){
-			if( !empty(I("post.id")) ){
-				$result = R ( "Api/Brand/get_dpjh", array (I("post.id")));
-				$this->ajaxReturn ( $result );
-			}
-			$this->error ( "错误");
+			$this->_short_block('getinfo',"Api/Brand/get_dpjh");
 		}
-
-		if(I("post.method") == 'add_2'){
-			if( !empty(I("post.name_2")) ){
-				$id = I("post.id_2");
-				$result = R ( "Api/Brand/add_dpjh", array (I("post."),$id,"_2"));
-				if($result)
-					$this->success ( "成功");
-			}
-			$this->error ( "错误");
-		}
-
-		$list = R ( "Api/Brand/get_dpjh_list" );
-		$this->assign ( "page", $list[page] );
-		$this->assign ( "result", $list[result] );
-
-		$list = R ( "Api/Brand/get_dpjh_list", array (1,I("get.master")) );		
-		$this->assign ( "page_2", $list[page] );
-		$this->assign ( "result_2", $list[result] );
-		
-		$list_option = R ( "Api/Cat/n_get_cats", array ('大牌钜惠') );
-		$this->assign ( "list_option", $list_option );
-		$this->assign ( "master", I("get.master") );
-
+		$this->_short_block('default',"Api/Brand/get_dpjh_list",'大牌钜惠');
 		$this->display ();
 	}
 
 	/*焕新搭配*/
 	public function hxdp() {
+		$this->_check_shop();
+		if(I("post.method") == 'add'){
+			$this->_short_block('add',"Api/Hxdp/add");
+		}
+		if(I("post.method") == 'getinfo'){
+			$this->_short_block('getinfo',"Api/Hxdp/get");
+		}
+		$this->_short_block('default',"Api/Hxdp/get_list",'焕新搭配');
 		$this->display ();
 	}
 
 	/*限时购*/
 	public function xsg() {
+		$this->_check_shop();
+		if(I("post.method") == 'add'){
+			$this->_short_block('add',"Api/Xsg/add");
+		}
+		if(I("post.method") == 'getinfo'){
+			$this->_short_block('getinfo',"Api/Xsg/get");
+		}
+		$this->_short_block('default',"Api/Xsg/get_list",'限时购');
 		$this->display ();
 	}
 
 	/*明星单品*/
 	public function mxdp() {
+		$this->_check_shop();
+		if(I("post.method") == 'add'){
+			$this->_short_block('add',"Api/Mxdp/add");
+		}
+		if(I("post.method") == 'getinfo'){
+			$this->_short_block('getinfo',"Api/Mxdp/get");
+		}
+		$this->_short_block('default',"Api/Mxdp/get_list");
 		$this->display ();
 	}
 
 	/*优惠券*/
 	public function coupon() {
+		$this->_check_shop();
+		if(I("post.method") == 'add'){
+			if( !empty(I("post.name")) ){
+				$result = R ( "Api/Shop/add", array (I("post.name"),$content,I("post.top"),I("post.id")));
+				if($result)
+					$this->success ( "成功");
+			}
+			$this->error ( "错误");
+		}
+		
+		if(I("post.method") == 'getinfo'){
+			$this->_short_block('getinfo',"Api/Coupon/get");
+		}
+		$this->_short_block('default',"Api/Coupon/get_list");
 		$this->display ();
 	}
 
-	/*优惠券*/
 	public function notShow() {
 		$id = I("get.cat_id");
 		if( !empty($id) ){
@@ -152,6 +151,49 @@ class IndexController extends PublicController {
 	}
 
 	
+	/*短代码块处理*/
+	public function _short_block($method,$path,$tag_cat='') {
+		if($method == 'add'){
+			if( !empty(I("post.")) ){
+				$result = R ( $path, array (I("post.")));
+				if($result)
+					$this->success ( "成功");
+			}
+			$this->error ( "错误");
+		}
+		if($method == 'getinfo'){
+			if( !empty(I("post.id")) ){
+				$result = R ( $path, array (I("post.id")));
+				if(  empty($result[id]) )
+					$this->error ( "错误");
+				$this->ajaxReturn ( $result );
+			}
+			$this->error ( "错误");
+		}
+
+		if($method == 'default'){
+			$list = R ( $path );
+			$this->assign ( "page", $list[page] );
+			$this->assign ( "result", $list[result] );
+			if( !empty($tag_cat)){
+				$list = R ( $path, array (1,I("get.master")) );		
+				$this->assign ( "page_2", $list[page] );
+				$this->assign ( "result_2", $list[result] );
+				/*二级*/
+				$list_option = R ( "Api/Cat/n_get_cats", array ($tag_cat) );
+				$this->assign ( "list_option", $list_option );
+				$this->assign ( "master", I("get.master") );
+			}
+		}
+
+	}
+
+	
+
+
+
+
+
 
 
 
