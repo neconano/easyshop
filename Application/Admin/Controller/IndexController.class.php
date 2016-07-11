@@ -126,18 +126,21 @@ class IndexController extends PublicController {
 	public function coupon() {
 		$this->_check_shop();
 		if(I("post.method") == 'add'){
-			if( !empty(I("post.name")) ){
-				$result = R ( "Api/Shop/add", array (I("post.name"),$content,I("post.top"),I("post.id")));
-				if($result)
-					$this->success ( "成功");
-			}
-			$this->error ( "错误");
+			$this->_short_block('add',"Api/Coupon/add");
 		}
-		
 		if(I("post.method") == 'getinfo'){
 			$this->_short_block('getinfo',"Api/Coupon/get");
 		}
-		$this->_short_block('default',"Api/Coupon/get_list");
+		$list = R ( "Api/Coupon/get_list" );
+		$this->assign ( "page", $list[page] );
+		$this->assign ( "result", $list[result] );
+		$list = R ( $path, array (1,I("get.master")) );		
+		$this->assign ( "page_2", $list[page] );
+		$this->assign ( "result_2", $list[result] );
+		/*二级*/
+		$list_option = R ( "Api/Cat/n_get_cats", array ($tag_cat) );
+		$this->assign ( "list_option", $list_option );
+		$this->assign ( "master", I("get.master") );
 		$this->display ();
 	}
 

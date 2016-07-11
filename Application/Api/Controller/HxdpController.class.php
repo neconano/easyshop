@@ -22,6 +22,11 @@ class HxdpController extends BaseController {
 		return $result;
 	}	
 
+	public function get_all($level=0) {
+		$list = R ( "Api/Cat/n_get_cats" ,array("焕新搭配"));
+		return $list;
+	}	
+
 
 }
 

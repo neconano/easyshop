@@ -5,18 +5,27 @@ class CouponController extends BaseController {
 
 
 	public function add($data) {
-		return R ( "Api/Cat/add_cat" ,array('优惠券',$data));
+		$data['finish_date'] = strtotime($data['finish_date']);
+		return $this->make_coupon($data,$data[master_id],"焕新搭配");
 	}	
 
 	public function get_list($level=0,$master_id=0) {
-		$list = R ( "Api/Cat/n_get_level" ,array("优惠券",$level,$master_id));
+		if($level == 0)
+			$model = "ViewCouponSumCatIndex";
+
+		$w['cat_id'] = $this->shop_id;
+		$w['tag_cat'] = 'coupon-sum';
+		$count = D2("ViewCouponSumCatIndex")->where($w)->count (); // 查询满足要求的总记录数
+		$Page = new \Think\Page($count,12);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+		$Page->setConfig('theme', "<ul class='pagination no-margin pull-right'></li><li>%FIRST%</li><li>%UP_PAGE%</li><li>%LINK_PAGE%</li><li>%DOWN_PAGE%</li><li>%END%</li><li><a> %HEADER%  %NOW_PAGE%/%TOTAL_PAGE% 页</a></ul>");
+		$show = $Page->show (); // 分页显示输出
+		$list['page'] = $show;
+		$result = D2("ViewCouponSumCatIndex")->where($w)->limit ( $Page->firstRow . ',' . $Page->listRows )->order("id desc")->select ();
+		$list['result'] = $result;
 		return $list;
 	}	
 
 	public function get($id) {
-		$w['id'] = $id;
-		$result = D2("Cat")->where($w)->find ();
-		$result = unserialize($result[text]);
 		return $result;
 	}	
 
@@ -72,17 +81,33 @@ class CouponController extends BaseController {
 	public function make_coupon_demo() {
 		$this->make_coupon('11',3,"11","11","11");
 	}
+
+	
 	/*make coupon*/
-	public function make_coupon($title,$num,$desription,$tag_id="",$tag_cat="") {
+	public function make_coupon($data,$tag_id="",$tag_cat="") {
+		if( empty($data[title]) )
+			$this->error ( "错误");
+		if( empty($data[num]) )
+			$this->error ( "错误");
+		$dat = $data;
 		$this->_init_shop();
 		$dat['shop_id'] = $this->shop_id;
 		$dat['tag_id'] = $tag_id;
 		$dat['tag_cat'] = $tag_cat;
-		$dat['title'] = $title;
-		$dat['num'] = $num;
-		$dat['desription'] = $desription;
-		D2("CouponSum")->make_coupon($dat);
+		return D2("CouponSum")->make_coupon($dat);
 	}
+	
+	// /*make coupon*/
+	// public function make_coupon_bak($title,$num,$desription,$tag_id="",$tag_cat="") {
+	// 	$this->_init_shop();
+	// 	$dat['shop_id'] = $this->shop_id;
+	// 	$dat['tag_id'] = $tag_id;
+	// 	$dat['tag_cat'] = $tag_cat;
+	// 	$dat['title'] = $title;
+	// 	$dat['num'] = $num;
+	// 	$dat['desription'] = $desription;
+	// 	D2("CouponSum")->make_coupon($dat);
+	// }
 
 	public function poll_coupon_demo() {
 		$a = $this->poll_coupon(1);

@@ -42,22 +42,27 @@ class CouponModel extends BaseModel {
 
 	/*生成优惠券*/
 	public function make_coupon_by_sum($dat) {
+		$sum_id = $dat[id];
+		unset($dat[id]);
 		$num = $dat['num'];
 		if( empty($num) )
 			return false;
 		for($i=0;$i<$num;$i++){
 			$dat2 = null;
+			$dat2 = $dat;
 			$code = $this->_make_coupon_code($dat);
-			$dat2['sum_id'] = $dat['id'];
+			$dat2['sum_id'] = $sum_id;
 			$dat2['coupon_code'] = $code;
-			$dat2['tag_id'] = $dat['tag_id'];
-			$dat2['tag_cat'] = $dat['tag_cat'];
+			// $dat2['tag_id'] = $dat['tag_id'];
+			// $dat2['tag_cat'] = $dat['tag_cat'];
 			//$dat2['shop_id'] = $dat['shop_id'];
 			$dat2['finish_date'] = $dat['finish_date'];
 			$this->create($dat2);
 			$id = $this->add();
 			/*relation to shop*/
-			$menuresult = R ( "Api/Shop/hook2shop_set",array($id, '优惠券', '', $dat['shop_id']) );
+			$menuresult = R ( "Api/Shop/hook2_set",array($id, 'coupon', $dat['shop_id']) );
+			/*所属cat*/
+			D2("CatIndex")->hook2cat_set($id, 'coupon', $dat['master_id']);
 		}
 		return true;
 	}

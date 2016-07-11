@@ -173,7 +173,7 @@ class CatController extends BaseController {
 
 	/**/
 	public function hook2cat_set($tag_id, $tag_cat, $cat_id) {
-		D2("Cat")->hook2cat_set($tag_id, $tag_cat, $cat_id);
+		D2("CatIndex")->hook2cat_set($tag_id, $tag_cat, $cat_id);
 	}
 
 	public function hook2cat_get($result,$tag_cat, $cat_id) {

@@ -62,7 +62,7 @@ class ShopController extends BaseController {
 
 	/*添加管理员到商铺*/
 	public function add_shop_admin($uid,$shop_id) {
-		$this->hook2shop_set($uid,'用户',$shop_id);
+		$this->hook2_set($uid,'用户',$shop_id);
 	}
 
 	/*hook: relation to shop*/
@@ -71,7 +71,7 @@ class ShopController extends BaseController {
 			$this->_init_shop();
 		else
 			$this->shop_id = $shop_id;
-		$this->hook2cat_set($tag_id, $tag_cat, $this->shop_id);
+		return R ( "Api/Cat/hook2cat_set" ,array($tag_id, $tag_cat, $this->shop_id));
 	}
 	
 	// /*get shop cat*/

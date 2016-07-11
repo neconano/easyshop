@@ -48,10 +48,10 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 										<volist name="result" id="result">
 											<tr>
 												<td>{$result.id}</td>
-												<td>{$result.name}</td>
-												<td>{$result.menu}</td>
-												<td>{$result.price}</td>
-												<td>{$result.time}</td>
+												<td>{$result.title}</td>
+												<td>{$result.master_id}</td>
+												<td>{$result.num}</td>
+												<td>{$result.finish_date}</td>
 												<td><a href="javascript:void(0);" onclick="reGood(this);" class="btn btn-white btn-sm">修改</a><a class="J_ajax_del btn btn-white btn-sm" href="{:U('Admin/Good/delgood',array('id'=>$result['id']))}">删除</a></td>
 											</tr>
 										</volist>
@@ -79,8 +79,12 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 													<td><input type="text" class="input col-sm-6" name="title" value=""></td>
 												</tr>
 												<tr>
-													<td>焕新搭配id:</td>
-													<td><input type="text" class="input col-sm-2" name="master_id" value=""></td>
+													<td>焕新搭配:</td>
+													<td><select class="select_2" name="master_id">
+															<volist name="list_option" id="addmenu">
+															<option value="{$addmenu.id}">{$addmenu.name}</option>
+															</volist>
+													</select></td>
 												</tr>
 												<tr>
 													<td>个数:</td>
@@ -97,10 +101,6 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 														</div>
 													</div>
 													</td>
-												</tr>
-												<tr>
-													<td>有效期:</td>
-													<td><input type="text" class="input col-sm-2" name="num" value=""></td>
 												</tr>
 											</tbody>
 										</table>
@@ -138,7 +138,7 @@ var UEURL = '__ROOT__/Public/Plugin/umeditor/';
 										<volist name="result" id="result">
 											<tr>
 												<td>{$result.id}</td>
-												<td>{$result.name}</td>
+												<td>{$result.title}</td>
 												<td>{$result.menu}</td>
 												<td>{$result.price}</td>
 												<td>{$result.time}</td>
